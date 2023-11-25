@@ -1,13 +1,13 @@
 {
   "profiles": {
-    "Studying._273.WebApp": {
+    "AlchemistStore": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7179;http://localhost:5160"
+      "applicationUrl": "https://localhost:7194;http://localhost:5139"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -28,8 +28,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:19710",
-      "sslPort": 44359
+      "applicationUrl": "http://localhost:22018",
+      "sslPort": 44345
     }
   }
 }

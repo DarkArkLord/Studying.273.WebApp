@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Studying.273.WebApp/Studying.273.WebApp.csproj", "Studying.273.WebApp/"]
-RUN dotnet restore "Studying.273.WebApp/Studying.273.WebApp.csproj"
+COPY ["AlchemistStore/AlchemistStore.csproj", "AlchemistStore/"]
+RUN dotnet restore "AlchemistStore/AlchemistStore.csproj"
 COPY . .
-WORKDIR "/src/Studying.273.WebApp"
-RUN dotnet build "Studying.273.WebApp.csproj" -c Release -o /app/build
+WORKDIR "/src/AlchemistStore"
+RUN dotnet build "AlchemistStore.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Studying.273.WebApp.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "AlchemistStore.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Studying.273.WebApp.dll"]
+ENTRYPOINT ["dotnet", "AlchemistStore.dll"]

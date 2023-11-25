@@ -4,8 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Studying._273.WebApp</RootNamespace>
-    <UserSecretsId>fa983d9d-828c-41a3-9c29-f0e70f3ef62a</UserSecretsId>
+    <UserSecretsId>1fed1bc8-e48b-4f18-9619-edbe95394c2e</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
