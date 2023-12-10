@@ -1,4 +1,4 @@
-﻿using AlchemistStore.Models;
+using AlchemistStore.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
