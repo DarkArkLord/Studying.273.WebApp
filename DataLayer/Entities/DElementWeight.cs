@@ -1,8 +1,8 @@
 ﻿namespace DataLayer.Entities
 {
-    public class DProductSaleCount
+    public class DElementWeight
     {
-        public DProduct Product { get; set; }
+        public DElement Element { get; set; }
         public int Weight { get; set; }
     }
 }

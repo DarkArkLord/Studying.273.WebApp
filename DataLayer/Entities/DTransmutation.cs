@@ -3,8 +3,8 @@
     public class DTransmutation
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public ICollection<DProductSaleCount> InputProducts { get; set; }
-        public ICollection<DProductSaleCount> OutputProducts { get; set; }
+        public DTransmutationRecipe Recipe { get; set; }
+        public ICollection<DProductWeight> InputProducts { get; set; }
+        public ICollection<DElementWeight> Waste { get; set; }
     }
 }

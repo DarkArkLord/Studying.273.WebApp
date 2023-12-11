@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public DClient Client { get; set; }
-        public ICollection<DProductSaleCount> Products { get; set; }
+        public ICollection<DProductWeight> Products { get; set; }
     }
 }
