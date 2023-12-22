@@ -23,7 +23,7 @@ namespace DataLayer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=data.db");
+            optionsBuilder.UseSqlite("Data Source=D:\\data.db");
         }
     }
 }

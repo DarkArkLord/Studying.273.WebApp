@@ -1,8 +1,15 @@
-﻿@{
+﻿@model ﻿IEnumerable<DataLayer.Entities.DElement>
+
+@{
     ViewData["Title"] = "Elements Menu";
 }
 
 <div class="text-center">
     <h1 class="display-4">Elements Menu</h1>
-    <a class="nav-link text-dark" asp-area="" asp-controller="Elements" asp-action="GetList">List</a>
+    <a asp-area="" asp-controller="Elements" asp-action="Create">Create</a>  <br />
+    Count: @(Model.Count()) <br />
+    @foreach (var item in Model)
+    {
+        @($"{item.Id}) {item.Name}") <br />
+    }
 </div>
