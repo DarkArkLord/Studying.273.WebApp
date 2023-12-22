@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataLayer.Entities
 {
@@ -7,7 +8,9 @@ namespace DataLayer.Entities
         public int Id { get; set; }
         public DUser Alchemist { get; set; }
         public DTransmutationRecipe Recipe { get; set; }
-        public ICollection<DProductWeight> InputProducts { get; set; }
-        public ICollection<DElementWeight> Waste { get; set; }
+        [NotMapped]
+        public List<DProductWeightTrans> InputProducts { get; set; }
+        [NotMapped]
+        public List<DElementWeightTrans> Waste { get; set; }
     }
 }

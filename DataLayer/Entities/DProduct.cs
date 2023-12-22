@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataLayer.Entities
 {
@@ -6,7 +7,8 @@ namespace DataLayer.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<DElementPurity> Elements { get; set; }
+        [NotMapped]
+        public List<DElementPurityProduct> Elements { get; set; }
         public int Price { get; set; }
     }
 }

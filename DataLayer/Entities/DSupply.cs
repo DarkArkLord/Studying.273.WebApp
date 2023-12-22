@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataLayer.Entities
 {
@@ -7,7 +8,8 @@ namespace DataLayer.Entities
         public int Id { get; set; }
         public DUser Supplier { get; set; }
         public DBranch Branch { get; set; }
-        public ICollection<DProductWeight> Products { get; set; }
+        [NotMapped]
+        public List<DProductWeightSupply> Products { get; set; }
         public int Price { get; set; }
     }
 }
