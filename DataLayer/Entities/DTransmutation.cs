@@ -1,4 +1,6 @@
-﻿namespace DataLayer.Entities
+﻿using System.Collections.Generic;
+
+namespace DataLayer.Entities
 {
     public class DTransmutation
     {
