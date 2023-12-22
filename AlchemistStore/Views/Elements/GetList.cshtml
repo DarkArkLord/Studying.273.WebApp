@@ -1,0 +1,10 @@
+﻿@model ﻿IEnumerable<DataLayer.Entities.DElement>
+
+@{
+    ViewData["Title"] = "Elements List";
+}
+
+@foreach (var item in (IEnumerable<DataLayer.Entities.DElement>)ViewBag.NotReturned)
+{
+    @($"{item.Id}) {item.Name}") <br />
+}
