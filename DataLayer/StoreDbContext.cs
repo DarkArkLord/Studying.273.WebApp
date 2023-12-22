@@ -5,16 +5,15 @@ namespace DataLayer
 {
     public class StoreDbContext : DbContext
     {
-        public DbSet<DElement> Elements { get; set; } = null!;
-        public DbSet<DProduct> Products { get; set; } = null!;
+        public DbSet<DAuthor> Authors { get; set; } = null!;
+        public DbSet<DBookSeries> BookSeries { get; set; } = null!;
+        public DbSet<DBook> Books { get; set; } = null!;
+
         public DbSet<DBranch> Branches { get; set; } = null!;
+        public DbSet<DLibrarian> Librarians { get; set; } = null!;
+        public DbSet<DClient> Clients { get; set; } = null!;
 
-        public DbSet<DUser> Users { get; set; } = null!;
-        public DbSet<DSale> Sales { get; set; } = null!;
-        public DbSet<DSupply> Supplies { get; set; } = null!;
-
-        public DbSet<DTransmutationRecipe> TransmutationRecipes { get; set; } = null!;
-        public DbSet<DTransmutation> Transmutations { get; set; } = null!;
+        public DbSet<DBookRent> BookRents { get; set; } = null!;
 
         public StoreDbContext()
         {

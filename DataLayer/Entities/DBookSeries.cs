@@ -1,6 +1,6 @@
 ﻿namespace DataLayer.Entities
 {
-    public class DElement
+    public class DBookSeries
     {
         public int Id { get; set; }
         public string Name { get; set; }
