@@ -7,6 +7,6 @@ namespace DataLayer.Entities
     {
         public DTransmutationRecipe TransmutationRecipe { get; set; }
         public DElement Element { get; set; }
-        public int Weight { get; set; }
+        public double Weight { get; set; }
     }
 }

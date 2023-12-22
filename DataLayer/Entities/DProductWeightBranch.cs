@@ -7,6 +7,6 @@ namespace DataLayer.Entities
     {
         public DBranch Branch { get; set; }
         public DProduct Product { get; set; }
-        public int Weight { get; set; }
+        public double Weight { get; set; }
     }
 }

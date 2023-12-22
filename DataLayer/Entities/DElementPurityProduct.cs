@@ -7,6 +7,6 @@ namespace DataLayer.Entities
     {
         public DProduct Product { get; set; }
         public DElement Element { get; set; }
-        public int Purity { get; set; }
+        public double Purity { get; set; }
     }
 }

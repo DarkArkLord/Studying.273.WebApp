@@ -7,6 +7,6 @@ namespace DataLayer.Entities
     {
         public DSupply Supply { get; set; }
         public DProduct Product { get; set; }
-        public int Weight { get; set; }
+        public double Weight { get; set; }
     }
 }
