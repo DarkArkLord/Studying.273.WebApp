@@ -5,7 +5,6 @@ namespace DataLayer.Entities
     [Keyless]
     public class DProductWeightSale
     {
-        public DSale Sale { get; set; }
         public DProduct Product { get; set; }
         public double Weight { get; set; }
     }
