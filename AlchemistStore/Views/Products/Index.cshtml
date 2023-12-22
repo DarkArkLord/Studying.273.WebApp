@@ -1,0 +1,18 @@
+﻿@model IEnumerable<DataLayer.Entities.DProduct>
+
+@{
+    ViewData["Title"] = "Products Menu";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Elements Menu</h1>
+    <a asp-area="" asp-controller="Elements" asp-action="Create">Create</a>  <br />
+    Count: @(Model.Count()) <br />
+
+    @foreach (var item in Model)
+    {
+        @($"{item.Id}) {item.Name}")
+        <a asp-area="" asp-controller="Elements" asp-action="Info" asp-route-id="@(item.Id)">(Info)</a>
+        <br />
+    }
+</div>
