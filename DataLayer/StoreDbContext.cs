@@ -7,9 +7,11 @@ namespace DataLayer
     {
         public DbSet<DElement> Elements { get; set; } = null!;
         public DbSet<DProduct> Products { get; set; } = null!;
+        public DbSet<DBranch> Branches { get; set; } = null!;
 
-        public DbSet<DClient> Clients { get; set; } = null!;
+        public DbSet<DUser> Users { get; set; } = null!;
         public DbSet<DSale> Sales { get; set; } = null!;
+        public DbSet<DSupply> Supplies { get; set; } = null!;
 
         public DbSet<DTransmutationRecipe> TransmutationRecipes { get; set; } = null!;
         public DbSet<DTransmutation> Transmutations { get; set; } = null!;

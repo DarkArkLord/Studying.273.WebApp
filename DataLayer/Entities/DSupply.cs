@@ -1,10 +1,9 @@
 ﻿namespace DataLayer.Entities
 {
-    public class DSale
+    public class DSupply
     {
         public int Id { get; set; }
-        public DUser Customer { get; set; }
-        public DUser Trader { get; set; }
+        public DUser Supplier { get; set; }
         public DBranch Branch { get; set; }
         public ICollection<DProductWeight> Products { get; set; }
         public int Price { get; set; }

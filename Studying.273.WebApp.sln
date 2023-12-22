@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlchemistStore", "AlchemistStore\AlchemistStore.csproj", "{4272A4CF-BAB0-4224-9DE2-9BDE69402E7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlchemistStore", "AlchemistStore\AlchemistStore.csproj", "{4272A4CF-BAB0-4224-9DE2-9BDE69402E7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{E92B5CF9-7279-4756-B4D3-F9A2A5EA7B60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{E92B5CF9-7279-4756-B4D3-F9A2A5EA7B60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicLayer", "LogicLayer\LogicLayer.csproj", "{03875FED-5AF1-4F53-A2F1-50558294273E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicLayer", "LogicLayer\LogicLayer.csproj", "{03875FED-5AF1-4F53-A2F1-50558294273E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
