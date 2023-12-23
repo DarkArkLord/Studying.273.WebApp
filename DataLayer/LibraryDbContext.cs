@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer
 {
-    public class StoreDbContext : DbContext
+    public class LibraryDbContext : DbContext
     {
         public DbSet<DAuthor> Authors { get; set; } = null!;
         public DbSet<DBookSeries> BookSeries { get; set; } = null!;
@@ -15,7 +15,7 @@ namespace DataLayer
 
         public DbSet<DBookRent> BookRents { get; set; } = null!;
 
-        public StoreDbContext()
+        public LibraryDbContext()
         {
             Database.EnsureCreated();
         }
