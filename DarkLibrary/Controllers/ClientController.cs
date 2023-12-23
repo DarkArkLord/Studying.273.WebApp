@@ -11,7 +11,7 @@ namespace DarkLibrary.Controllers
         {
             using (var db = new LibraryDbContext())
             {
-                var items = db.Branches.ToArray();
+                var items = db.Clients.ToArray();
                 return View("Index", items);
             }
         }
