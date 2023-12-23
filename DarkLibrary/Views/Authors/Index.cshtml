@@ -1,0 +1,20 @@
+﻿@model IEnumerable<DataLayer.Entities.DAuthor>
+
+@{
+    ViewData["Title"] = "Authors menu";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Authors menu</h1>
+    
+    <a class="nav-link text-dark" asp-area="" asp-controller="Authors" asp-action="Create">Create</a> <br />
+
+    Count: @(Model.Count()) <br />
+
+    @foreach(var item in Model)
+    {
+        <div>
+            @($"{item.Id}) {item.Name}")
+        </div>
+    }
+</div>
