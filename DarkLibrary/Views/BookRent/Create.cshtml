@@ -1,0 +1,58 @@
+﻿@model CreateRentModel
+
+@{
+    ViewData["Title"] = "Create book rent";
+}
+
+@if (Model.ErrorText is not null)
+{
+    @(Model.ErrorText)
+}
+
+<form method="post" action="./create">
+
+    <label>Book</label>
+    <select name="bookId">
+        <option value="">--</option>
+        @foreach (var item in Model.Books)
+        {
+            <option value="@(item.Id)">@(item.Name)</option>
+        }
+    </select>
+
+    <label>Client</label>
+    <select name="clientId">
+        <option value="">--</option>
+        @foreach (var item in Model.Clients)
+        {
+            <option value="@(item.Id)">@(item.Name)</option>
+        }
+    </select>
+
+    <label>Librarian</label>
+    <select name="librarianId">
+        <option value="">--</option>
+        @foreach (var item in Model.Librarians)
+        {
+            <option value="@(item.Id)">@(item.Name)</option>
+        }
+    </select>
+
+    <label>Branch</label>
+    <select name="branchId">
+        <option value="">--</option>
+        @foreach (var item in Model.Branches)
+        {
+            <option value="@(item.Id)">@(item.Name)</option>
+        }
+    </select>
+
+    <label>Rent date</label>
+    <input name="rentDate" type="date" />
+
+    <label>Rent days</label>
+    <input name="rentDays" type="number" min="1" />
+
+    <input type="submit" value="Create" />
+
+</form>

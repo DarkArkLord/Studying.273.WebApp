@@ -1,0 +1,77 @@
+﻿@model IEnumerable<DataLayer.Entities.DBookRent>
+
+@{
+    ViewData["Title"] = "Book rent menu";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Book menu</h1>
+
+    <a asp-area="" asp-controller="BookRent" asp-action="Create">Create</a> <br />
+
+    Count: @(Model.Count()) <br />
+
+    <table class="table">
+        <tr>
+            <td>
+                Id
+            </td>
+            <td>
+                Book
+            </td>
+            <td>
+                Client
+            </td>
+            <td>
+                Librarian
+            </td>
+            <td>
+                Branch
+            </td>
+            <td>
+                RentDate
+            </td>
+            <td>
+                RentDays
+            </td>
+            <td>
+                ReturnDate
+            </td>
+            <td>
+                Penalty
+            </td>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(item.Id)
+                </td>
+                <td>
+                    @(item.Book.Name)
+                </td>
+                <td>
+                    @(item.Client.Name)
+                </td>
+                <td>
+                    @(item.Librarian.Name)
+                </td>
+                <td>
+                    @(item.Branch.Name)
+                </td>
+                <td>
+                    @(item.RentDate)
+                </td>
+                <td>
+                    @(item.RentDays)
+                </td>
+                <td>
+                    @(item.ReturnDate?.ToString() ?? "--")
+                </td>
+                <td>
+                    @(item.Penalty?.ToString() ?? "--")
+                </td>
+            </tr>
+        }
+    </table>
+</div>
