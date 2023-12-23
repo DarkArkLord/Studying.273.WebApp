@@ -1,0 +1,47 @@
+﻿@model IEnumerable<DataLayer.Entities.DBook>
+
+@{
+    ViewData["Title"] = "Book menu";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Book menu</h1>
+
+    <a asp-area="" asp-controller="Book" asp-action="Create">Create</a> <br />
+
+    Count: @(Model.Count()) <br />
+
+    <table class="table">
+        <tr>
+            <td>
+                Id
+            </td>
+            <td>
+                Name
+            </td>
+            <td>
+                Author
+            </td>
+            <td>
+                Series
+            </td>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(item.Id)
+                </td>
+                <td>
+                    @(item.Name)
+                </td>
+                <td>
+                    @(item.Author?.Name ?? "--")
+                </td>
+                <td>
+                    @(item.Series?.Name ?? "--")
+                </td>
+            </tr>
+        }
+    </table>
+</div>
