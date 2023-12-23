@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DarkLibrary.Controllers
 {
     [Route("/authors")]
-    public class AuthorsController : Controller
+    public class AuthorController : Controller
     {
         public IActionResult Index()
         {
