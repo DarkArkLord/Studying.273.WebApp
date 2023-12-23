@@ -136,6 +136,114 @@ namespace DarkLibrary.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("close/{id}")]
+        public IActionResult Close(int id)
+        {
+            using (var db = new LibraryDbContext())
+            {
+                var model = PrepareCloseRentModel(db, id);
+                if (model.Rent is null)
+                {
+                    model.ErrorText = "Error: Incorrect rent id";
+                }
+                return View("Close", model);
+            }
+        }
+
+        [HttpPost]
+        [Route("calculate/{id}")]
+        public IActionResult CloseCalculate(int id)
+        {
+            using (var db = new LibraryDbContext())
+            {
+                var model = PrepareCloseRentModel(db, id);
+                if (model.Rent is null)
+                {
+                    model.ErrorText = "Error: Incorrect rent id";
+                    return View("Close", model);
+                }
+
+                var rentEndDateInput = Request.Form["rentEndDate"];
+                var penaltyInput = Request.Form["penalty"];
+
+                if (!DateTime.TryParse(rentEndDateInput, out DateTime rentEndDate))
+                {
+                    model.ErrorText = "Error: Incorrect rent end date";
+                    return View("Close", model);
+                }
+
+                if (rentEndDate < model.Rent.RentDate)
+                {
+                    model.ErrorText = "Error: Rent end must be great or equal rent start date";
+                    return View("Close", model);
+                }
+
+                model.EndDate = rentEndDate;
+
+                if (!int.TryParse(penaltyInput, out int penaltyByDay))
+                {
+                    model.ErrorText = "Error: Incorrect penalty";
+                    return View("Close", model);
+                }
+
+                if (penaltyByDay < 1)
+                {
+                    model.ErrorText = "Error: Penalty must be positive";
+                    return View("Close", model);
+                }
+
+                model.PenaltyByDay = penaltyByDay;
+
+                var rentRealDays = (int)(model.EndDate - model.Rent.RentDate).Value.TotalDays;
+                if (rentRealDays > model.Rent.RentDays)
+                {
+                    model.TotalPenalty = (rentRealDays - model.Rent.RentDays) * penaltyByDay;
+                }
+                else
+                {
+                    model.TotalPenalty = 0;
+                }
+
+                return View("Close", model);
+            }
+        }
+
+        [HttpPost]
+        [Route("close/{id}")]
+        public IActionResult ClosePost(int id)
+        {
+            using (var db = new LibraryDbContext())
+            {
+                var model = PrepareCloseRentModel(db, id);
+                if (model.Rent is null)
+                {
+                    model.ErrorText = "Error: Incorrect rent id";
+                }
+
+                var rentEndDateInput = Request.Form["rentEndDate"];
+                var penaltyInput = Request.Form["penalty"];
+
+                if (!DateTime.TryParse(rentEndDateInput, out DateTime rentEndDate))
+                {
+                    model.ErrorText = "Error: Incorrect rent end date";
+                    return View("Close", model);
+                }
+
+                if (!int.TryParse(penaltyInput, out int penalty))
+                {
+                    model.ErrorText = "Error: Incorrect penalty";
+                    return View("Close", model);
+                }
+
+                model.Rent.ReturnDate = rentEndDate;
+                model.Rent.Penalty = penalty;
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+        }
+
         private CreateRentModel PrepareCreateRentModel(LibraryDbContext db)
         {
             return new CreateRentModel
@@ -152,6 +260,20 @@ namespace DarkLibrary.Controllers
             var model = PrepareCreateRentModel(db);
             model.ErrorText = message;
             return View("Create", model);
+        }
+
+        private CloseRentModel PrepareCloseRentModel(LibraryDbContext db, int id)
+        {
+            return new CloseRentModel
+            {
+                RentId = id,
+                Rent = db.BookRents
+                    .Include(rent => rent.Book)
+                    .Include(rent => rent.Client)
+                    .Include(rent => rent.Librarian)
+                    .Include(rent => rent.Branch)
+                    .FirstOrDefault(rent => rent.Id == id)
+            };
         }
     }
 }

@@ -40,6 +40,9 @@
             <td>
                 Penalty
             </td>
+            <td>
+                Actions
+            </td>
         </tr>
         @foreach (var item in Model)
         {
@@ -60,16 +63,26 @@
                     @(item.Branch.Name)
                 </td>
                 <td>
-                    @(item.RentDate)
+                    @(item.RentDate.ToShortDateString())
                 </td>
                 <td>
                     @(item.RentDays)
                 </td>
                 <td>
-                    @(item.ReturnDate?.ToString() ?? "--")
+                    @(item.ReturnDate?.ToShortDateString() ?? "--")
                 </td>
                 <td>
                     @(item.Penalty?.ToString() ?? "--")
+                </td>
+                <td>
+                    @if (item.Penalty is null)
+                    {
+                        <a asp-area="" asp-controller="BookRent" asp-action="Close" asp-route-id="@(item.Id)">Close</a> <br />
+                    }
+                    else
+                    {
+                        @("--")
+                    }
                 </td>
             </tr>
         }

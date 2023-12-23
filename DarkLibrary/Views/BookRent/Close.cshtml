@@ -1,0 +1,86 @@
+﻿@model CloseRentModel
+
+@{
+    ViewData["Title"] = "Close book rent";
+}
+
+@if (Model.ErrorText is not null)
+{
+    @(Model.ErrorText)
+}
+
+@if (Model.Rent is not null)
+{
+    <form method="post" action="/rent/calculate/@(Model.Rent.Id)">
+        <table class="table">
+            <tr>
+                <td>
+                    Id
+                </td>
+                <td>
+                    Book
+                </td>
+                <td>
+                    Client
+                </td>
+                <td>
+                    Librarian
+                </td>
+                <td>
+                    Branch
+                </td>
+                <td>
+                    RentDate
+                </td>
+                <td>
+                    RentDays
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @(Model.Rent.Id)
+                </td>
+                <td>
+                    @(Model.Rent.Book.Name)
+                </td>
+                <td>
+                    @(Model.Rent.Client.Name)
+                </td>
+                <td>
+                    @(Model.Rent.Librarian.Name)
+                </td>
+                <td>
+                    @(Model.Rent.Branch.Name)
+                </td>
+                <td>
+                    @(Model.Rent.RentDate)
+                </td>
+                <td>
+                    @(Model.Rent.RentDays)
+                </td>
+            </tr>
+        </table>
+
+        <label>Rent end date</label>
+        <input name="rentEndDate" type="date" />
+
+        <label>Penalty by day</label>
+        <input name="penalty" type="number" min="1" />
+
+        <input type="submit" value="Calculate" />
+
+    </form>
+}
+@if (Model.EndDate is not null && Model.TotalPenalty is not null)
+{
+    <form method="post" action="/rent/close/@(Model.Rent.Id)">
+        <label>Rent end date</label>
+        <input name="rentEndDate" readonly="@(true)" type="date" value="@(Model.EndDate?.ToString("yyyy-MM-dd"))" />
+
+        <label>Total penalty</label>
+        <input name="penalty" readonly="@(true)" type="number" value="@(Model.TotalPenalty)" />
+
+        <input type="submit" value="Close" />
+
+    </form>
+} 
