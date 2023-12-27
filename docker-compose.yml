@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  darklibrary:
+    image: ${DOCKER_REGISTRY-}darklibrary
+    build:
+      context: .
+      dockerfile: DarkLibrary/Dockerfile
+    volumes:
+      - ./db/main/:/app/db/
