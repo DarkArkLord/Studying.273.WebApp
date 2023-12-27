@@ -1,10 +1,10 @@
-﻿namespace Entities
+﻿namespace DataLayer.Entities
 {
     public class DUser
     {
         public int Id { get; set; }
         public string Login { get; set; }
         public string PaswordHash { get; set; }
-        public int? LibrarianId { get; set; }
+        public DLibrarian? Librarian { get; set; }
     }
 }
