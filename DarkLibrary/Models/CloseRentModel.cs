@@ -1,4 +1,4 @@
-﻿using DataLayer.Entities;
+﻿using DataLayer.LinkedEntities;
 
 namespace DarkLibrary.Models
 {

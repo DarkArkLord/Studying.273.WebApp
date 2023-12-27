@@ -1,14 +1,15 @@
-﻿using System;
+﻿using DataLayer.Entities;
+using System;
 
-namespace DataLayer.Entities
+namespace DataLayer.LinkedEntities
 {
     public class DBookRent
     {
         public int Id { get; set; }
-        public int BookId { get; set; }
-        public int ClientId { get; set; }
-        public int LibrarianId { get; set; }
-        public int BranchId { get; set; }
+        public DBook Book { get; set; }
+        public DClient Client { get; set; }
+        public DLibrarian Librarian { get; set; }
+        public DBranch Branch { get; set; }
         public DateTime RentDate { get; set; }
         public int RentDays { get; set; }
         public DateTime? ReturnDate { get; set; }

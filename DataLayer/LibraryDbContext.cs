@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer
 {
-    public class LibraryDbContext : DbContext
+    public class LibraryDbContext : BaseLibraryDbContext
     {
         public DbSet<DAuthor> Authors { get; set; } = null!;
         public DbSet<DBookSeries> BookSeries { get; set; } = null!;
@@ -14,15 +14,5 @@ namespace DataLayer
         public DbSet<DClient> Clients { get; set; } = null!;
 
         public DbSet<DBookRent> BookRents { get; set; } = null!;
-
-        public LibraryDbContext()
-        {
-            Database.EnsureCreated();
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite("Data Source=/app/db/data.db");
-        }
     }
 }
