@@ -12,10 +12,11 @@ namespace AuthorApi.Controllers
         [HttpGet()]
         public IEnumerable<DAuthor> Get()
         {
-            using (var db = new AuthorDbContext())
-            {
-                return db.Authors.ToArray();
-            }
+            //using (var db = new AuthorDbContext())
+            //{
+            //    return db.Authors.ToArray();
+            //}
+            return null;
         }
     }
 }

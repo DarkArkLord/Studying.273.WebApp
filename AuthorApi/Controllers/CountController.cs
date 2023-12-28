@@ -12,10 +12,11 @@ namespace AuthorApi.Controllers
         [HttpGet()]
         public int Get()
         {
-            using (var db = new AuthorDbContext())
-            {
-                return db.Authors.Count();
-            }
+            //using (var db = new AuthorDbContext())
+            //{
+            //    return db.Authors.Count();
+            //}
+            return 0;
         }
     }
 }

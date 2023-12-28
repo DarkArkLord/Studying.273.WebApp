@@ -13,9 +13,24 @@ namespace DarkLibrary.Controllers
             _logger = logger;
         }
 
+        private async Task<string> SendRequest()
+        {
+            using (var client = new System.Net.Http.HttpClient())
+            {
+                // Call *mywebapi*, and display its response in the page
+                var request = new System.Net.Http.HttpRequestMessage();
+                // webapi is the container name
+                request.RequestUri = new Uri("http://authorapi/Count");
+                var response = await client.SendAsync(request);
+                string counter = await response.Content.ReadAsStringAsync();
+                return counter;
+            }
+        }
+
         public IActionResult Index()
         {
-            return View();
+            string? res = null; //SendRequest().Result;
+            return View("Index", res);
         }
 
         public IActionResult Privacy()

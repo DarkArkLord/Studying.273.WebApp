@@ -1,11 +1,11 @@
 ﻿using DataLayer;
 using DataLayer.Entities;
-using Microsoft.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore;
 
 namespace AuthorApi
 {
-    public class AuthorDbContext : BaseLibraryDbContext
+    public class AuthorDbContext //: BaseLibraryDbContext
     {
-        public DbSet<DAuthor> Authors { get; set; } = null!;
+        //public DbSet<DAuthor> Authors { get; set; } = null!;
     }
 }

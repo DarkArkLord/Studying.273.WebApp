@@ -23,17 +23,17 @@ services:
   #   volumes:
   #     - ./db/authors/:/app/db/
 
-  sqldata:
+  sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
     environment:
-      - MSSQL_SA_PASSWORD=123456789qQ
+      - SA_PASSWORD=123456789qQ
       - ACCEPT_EULA=Y
     ports:
-      - "5533:1433"
+      - "1433:1433"
     volumes:
-      - db_vol:/var/opt/mssql
+      - sql_data:/var/opt/mssql
 
 volumes:
-  db_vol:
-
+  sql_data:
 

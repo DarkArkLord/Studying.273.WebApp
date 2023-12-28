@@ -12,11 +12,12 @@ namespace AuthorApi.Controllers
         [HttpGet()]
         public DAuthor? Get(int id)
         {
-            using (var db = new AuthorDbContext())
-            {
-                var item = db.Authors.FirstOrDefault(item => item.Id == id);
-                return item;
-            }
+            //using (var db = new AuthorDbContext())
+            //{
+            //    var item = db.Authors.FirstOrDefault(item => item.Id == id);
+            //    return item;
+            //}
+            return null;
         }
     }
 }
