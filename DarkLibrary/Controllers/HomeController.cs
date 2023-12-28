@@ -13,14 +13,17 @@ namespace DarkLibrary.Controllers
             _logger = logger;
         }
 
+        private static HttpClientHandler MakeHandler()
+    => new() { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true };
+
         private async Task<string> SendRequest()
         {
-            using (var client = new System.Net.Http.HttpClient())
+            using (var client = new System.Net.Http.HttpClient(MakeHandler()))
             {
                 // Call *mywebapi*, and display its response in the page
                 var request = new System.Net.Http.HttpRequestMessage();
                 // webapi is the container name
-                request.RequestUri = new Uri("http://authorapi/Count");
+                request.RequestUri = new Uri("https://author_api:8081/Count");
                 var response = await client.SendAsync(request);
                 string counter = await response.Content.ReadAsStringAsync();
                 return counter;
@@ -29,7 +32,7 @@ namespace DarkLibrary.Controllers
 
         public IActionResult Index()
         {
-            string? res = null; //SendRequest().Result;
+            string? res = SendRequest().Result;
             return View("Index", res);
         }
 

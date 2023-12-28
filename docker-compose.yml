@@ -3,25 +3,21 @@ version: '3.4'
 services:
   darklibrary:
     image: ${DOCKER_REGISTRY-}darklibrary
+    container_name: DarkLibrary
     build:
       context: .
       dockerfile: DarkLibrary/Dockerfile
-    # environment:
-    #   - author_api=http://localhost:6601
-    ports:
-      - "80:8081"
-    volumes:
-      - ./db/main/:/app/db/
+    # ports:
+    #   - "80:8081"
 
-  # authorapi:
-  #   image: ${DOCKER_REGISTRY-}authorapi
-  #   build:
-  #     context: .
-  #     dockerfile: AuthorApi/Dockerfile 
-  #   ports:
-  #     - "6601:8081"
-  #   volumes:
-  #     - ./db/authors/:/app/db/
+  authorapi:
+    image: ${DOCKER_REGISTRY-}authorapi
+    container_name: author_api
+    build:
+      context: .
+      dockerfile: AuthorApi/Dockerfile 
+    ports:
+      - "6601:8081"
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -30,7 +26,7 @@ services:
       - SA_PASSWORD=123456789qQ
       - ACCEPT_EULA=Y
     ports:
-      - "1433:1433"
+      - "5533:1433"
     volumes:
       - sql_data:/var/opt/mssql
 

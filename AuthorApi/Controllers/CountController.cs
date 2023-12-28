@@ -16,7 +16,7 @@ namespace AuthorApi.Controllers
             //{
             //    return db.Authors.Count();
             //}
-            return 0;
+            return 6;
         }
     }
 }
