@@ -6,20 +6,34 @@ services:
     build:
       context: .
       dockerfile: DarkLibrary/Dockerfile
-    environment:
-      - author_api=http://localhost:6601
+    # environment:
+    #   - author_api=http://localhost:6601
     ports:
       - "80:8081"
     volumes:
       - ./db/main/:/app/db/
 
-  authorapi:
-    image: ${DOCKER_REGISTRY-}authorapi
-    build:
-      context: .
-      dockerfile: AuthorApi/Dockerfile 
+  # authorapi:
+  #   image: ${DOCKER_REGISTRY-}authorapi
+  #   build:
+  #     context: .
+  #     dockerfile: AuthorApi/Dockerfile 
+  #   ports:
+  #     - "6601:8081"
+  #   volumes:
+  #     - ./db/authors/:/app/db/
+
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - MSSQL_SA_PASSWORD=123456789qQ
+      - ACCEPT_EULA=Y
     ports:
-      - "6601:8081"
+      - "5533:1433"
     volumes:
-      - ./db/authors/:/app/db/
+      - db_vol:/var/opt/mssql
+
+volumes:
+  db_vol:
+
 
