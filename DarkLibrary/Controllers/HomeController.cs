@@ -32,8 +32,8 @@ namespace DarkLibrary.Controllers
 
         public IActionResult Index()
         {
-            string? res = SendRequest().Result;
-            return View("Index", res);
+            //string? res = SendRequest().Result;
+            return View();
         }
 
         public IActionResult Privacy()
