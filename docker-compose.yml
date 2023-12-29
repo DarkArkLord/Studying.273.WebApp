@@ -9,6 +9,8 @@ services:
       dockerfile: DarkLibrary/Dockerfile
     # ports:
     #   - "80:8081"
+    depends_on:
+        - authorapi
 
   authorapi:
     image: ${DOCKER_REGISTRY-}authorapi

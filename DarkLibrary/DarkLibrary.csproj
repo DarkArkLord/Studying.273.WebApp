@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
+    <ProjectReference Include="..\WebApiUtils\WebApiUtils.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 using DarkLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using WebApiUtils;
 
 namespace DarkLibrary.Controllers
 {
@@ -13,26 +14,15 @@ namespace DarkLibrary.Controllers
             _logger = logger;
         }
 
-        private static HttpClientHandler MakeHandler()
-    => new() { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true };
-
-        private async Task<string> SendRequest()
-        {
-            using (var client = new System.Net.Http.HttpClient(MakeHandler()))
-            {
-                // Call *mywebapi*, and display its response in the page
-                var request = new System.Net.Http.HttpRequestMessage();
-                // webapi is the container name
-                request.RequestUri = new Uri("https://author_api:8081/Count");
-                var response = await client.SendAsync(request);
-                string counter = await response.Content.ReadAsStringAsync();
-                return counter;
-            }
-        }
-
         public IActionResult Index()
         {
-            //string? res = SendRequest().Result;
+            //using (var client = new DarkHttpClient())
+            //{
+            //    var response = await client.CreateRequest()
+            //        .SetUri("https://author_api:8081/Count")
+            //        .SendAsync();
+            //    string counter = await response.Content.ReadAsStringAsync();
+            //}
             return View();
         }
 
