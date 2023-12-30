@@ -1,0 +1,15 @@
+﻿@if (ViewData["ErrorText"] is not null)
+{
+    @(ViewData["ErrorText"])
+}
+
+<h1 class="display-4">@(ViewData["Title"])</h1>
+
+<form method="post" action="./create">
+
+    <label>Name</label>
+    <input name="name" type="text" value="@(ViewData["EntityName"])" />
+
+    <input type="submit" value="Create" />
+
+</form>

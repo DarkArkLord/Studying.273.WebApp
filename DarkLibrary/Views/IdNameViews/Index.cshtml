@@ -1,0 +1,16 @@
+﻿@model IEnumerable<DataLayer.Entities.DEntityIdName>
+
+<div class="text-center">
+    <h1 class="display-4">@(ViewData["Title"])</h1>
+    
+    <a asp-area="" asp-controller="@(ViewData["Controller"])" asp-action="Create">Create</a> <br />
+
+    Count: @(Model.Count()) <br />
+
+    @foreach(var item in Model)
+    {
+        <div>
+            @($"{item.Id}) {item.Name}")
+        </div>
+    }
+</div>

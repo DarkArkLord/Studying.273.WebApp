@@ -12,15 +12,22 @@ namespace DarkLibrary.Controllers
             using (var db = new LibraryDbContext())
             {
                 var items = db.Authors.ToArray();
-                return View("Index", items);
+                return ReturnIndexWithList("Author menu", items);
             }
+        }
+
+        private IActionResult ReturnIndexWithList(string title, IEnumerable<DEntityIdName> items)
+        {
+            ViewData["Title"] = title;
+            ViewData["Controller"] = "Author";
+            return View("Views/IdNameViews/Index.cshtml", items);
         }
 
         [HttpGet]
         [Route("create")]
         public IActionResult Create()
         {
-            return View("Create", null);
+            return ReturnCreateWithErrorText("Create Author", null);
         }
 
         [HttpPost]
@@ -30,14 +37,14 @@ namespace DarkLibrary.Controllers
             var name = Request.Form["name"].ToString().Trim();
             if (name is null || name.Length < 1)
             {
-                return View("Create", "Error: Name can not be empty");
+                return ReturnCreateWithErrorText("Create Author", "Error: Name can not be empty");
             }
 
             using (var db = new LibraryDbContext())
             {
                 if (db.Authors.Any(author => author.Name == name))
                 {
-                    return View("Create", $"Error: Author \"{name}\" already exists");
+                    return ReturnCreateWithErrorText("Create Author", $"Error: Author \"{name}\" already exists", name);
                 }
 
                 var author = new DAuthor { Name = name };
@@ -46,6 +53,14 @@ namespace DarkLibrary.Controllers
 
                 return RedirectToAction("Index");
             }
+        }
+
+        private IActionResult ReturnCreateWithErrorText(string title, string? errorText, string name = "")
+        {
+            ViewData["Title"] = title;
+            ViewData["ErrorText"] = errorText;
+            ViewData["EntityName"] = name;
+            return View("Views/IdNameViews/Create.cshtml");
         }
     }
 }
