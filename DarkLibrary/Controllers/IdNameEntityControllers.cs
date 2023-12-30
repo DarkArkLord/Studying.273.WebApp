@@ -87,4 +87,52 @@ namespace DarkLibrary.Controllers
         protected override LibraryDbContext CreateDbContext() => new LibraryDbContext();
         protected override DbSet<DAuthor> GetDbSet(LibraryDbContext context) => context.Authors;
     }
+
+
+    [Route("/series")]
+    public class BookSeriesController : BaseIdNameEntityControllers<LibraryDbContext, DBookSeries>
+    {
+        protected override string IndexTitle => "Series menu";
+        protected override string CreateTitle => "Create Book Series";
+        protected override string ControllerName => "BookSeries";
+
+        protected override LibraryDbContext CreateDbContext() => new LibraryDbContext();
+        protected override DbSet<DBookSeries> GetDbSet(LibraryDbContext context) => context.BookSeries;
+    }
+
+
+    [Route("/branch")]
+    public class BranchController : BaseIdNameEntityControllers<LibraryDbContext, DBranch>
+    {
+        protected override string IndexTitle => "Branch menu";
+        protected override string CreateTitle => "Create Branch";
+        protected override string ControllerName => "Branch";
+
+        protected override LibraryDbContext CreateDbContext() => new LibraryDbContext();
+        protected override DbSet<DBranch> GetDbSet(LibraryDbContext context) => context.Branches;
+    }
+
+
+    [Route("/librarian")]
+    public class LibrarianController : BaseIdNameEntityControllers<LibraryDbContext, DLibrarian>
+    {
+        protected override string IndexTitle => "Librarian menu";
+        protected override string CreateTitle => "Create Librarian";
+        protected override string ControllerName => "Librarian";
+
+        protected override LibraryDbContext CreateDbContext() => new LibraryDbContext();
+        protected override DbSet<DLibrarian> GetDbSet(LibraryDbContext context) => context.Librarians;
+    }
+
+
+    [Route("/client")]
+    public class ClientController : BaseIdNameEntityControllers<LibraryDbContext, DClient>
+    {
+        protected override string IndexTitle => "Client menu";
+        protected override string CreateTitle => "Create Client";
+        protected override string ControllerName => "Client";
+
+        protected override LibraryDbContext CreateDbContext() => new LibraryDbContext();
+        protected override DbSet<DClient> GetDbSet(LibraryDbContext context) => context.Clients;
+    }
 }
