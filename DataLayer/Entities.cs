@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WebApiUtils.BaseApi;
 
 namespace DataLayer.Entities
 {
-    public class DEntityIdName
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
-
     public class DAuthor : DEntityIdName { }
 
     public class DBookSeries : DEntityIdName { }
