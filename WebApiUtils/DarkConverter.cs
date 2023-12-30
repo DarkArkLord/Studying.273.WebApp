@@ -25,5 +25,16 @@ namespace WebApiUtils
 
             return result;
         }
+        public static void CopyInto<T>(T? input, T? output)
+        {
+            if (input is null || output is null) return;
+
+            var inProperties = typeof(T).GetProperties();
+            foreach (var property in inProperties)
+            {
+                var value = property.GetValue(input);
+                property.SetValue(output, value);
+            }
+        }
     }
 }
