@@ -10,6 +10,7 @@ services:
     # ports:
     #   - "80:8081"
     depends_on:
+        - sqlserver
         - authorapi
 
   authorapi:
@@ -22,6 +23,8 @@ services:
       dockerfile: AuthorApi/Dockerfile 
     ports:
       - "6601:8081"
+    depends_on:
+        - sqlserver
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
