@@ -3,11 +3,12 @@
     public static class ApiDictionary
     {
         private static string protocol = "https";
+        private static string port = "8081";
 
-        public static NamedApiMethods AuthorApi { get; private set; } = new NamedApiMethods(protocol, "author_api");
-        public static NamedApiMethods BookSeriesApi { get; private set; } = new NamedApiMethods(protocol, "bookseries_api");
-        public static NamedApiMethods BranchApi { get; private set; } = new NamedApiMethods(protocol, "branch_api");
-        public static NamedApiMethods ClientApi { get; private set; } = new NamedApiMethods(protocol, "client_api");
-        public static NamedApiMethods LibratianApi { get; private set; } = new NamedApiMethods(protocol, "librarian_api");
+        public static NamedApiMethods AuthorApi { get; private set; } = new NamedApiMethods(protocol, "author_api", port);
+        public static NamedApiMethods BookSeriesApi { get; private set; } = new NamedApiMethods(protocol, "bookseries_api", port);
+        public static NamedApiMethods BranchApi { get; private set; } = new NamedApiMethods(protocol, "branch_api", port);
+        public static NamedApiMethods ClientApi { get; private set; } = new NamedApiMethods(protocol, "client_api", port);
+        public static NamedApiMethods LibratianApi { get; private set; } = new NamedApiMethods(protocol, "librarian_api", port);
     }
 }

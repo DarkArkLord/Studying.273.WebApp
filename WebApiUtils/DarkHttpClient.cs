@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace WebApiUtils
@@ -43,6 +45,16 @@ namespace WebApiUtils
             {
                 message.Method = method;
                 return this;
+            }
+
+            public DarkHttpRequestMessage SetMethodGet()
+            {
+                return SetMethod(HttpMethod.Get);
+            }
+
+            public DarkHttpRequestMessage SetMethodPost()
+            {
+                return SetMethod(HttpMethod.Post);
             }
 
             public DarkHttpRequestMessage SetUri(string uri)
