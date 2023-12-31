@@ -6,7 +6,8 @@
       "serviceActions": {
         "darklibrary": "StartDebugging",
         "authorapi": "StartDebugging",
-        "bookseriesapi": "StartDebugging"
+        "bookseriesapi": "StartDebugging",
+        "branchapi": "StartDebugging"
       }
     }
   }

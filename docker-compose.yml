@@ -36,7 +36,20 @@ services:
       context: .
       dockerfile: BookSeriesApi/Dockerfile
     ports:
-      - "6601:8081"
+      - "6602:8081"
+    depends_on:
+        - sqlserver
+
+  branchapi:
+    image: ${DOCKER_REGISTRY-}branchapi
+    container_name: branch_api
+    environment:
+      - ConnectionString=Server=sqlserver;Database=branch_db;User Id=sa;Password=123456789qQ;Encrypt=False;TrustServerCertificate=True;
+    build:
+      context: .
+      dockerfile: BranchApi/Dockerfile
+    ports:
+      - "6603:8081"
     depends_on:
         - sqlserver
 
@@ -53,5 +66,6 @@ services:
 
 volumes:
   sql_data:
+
 
 
