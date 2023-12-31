@@ -13,6 +13,8 @@ services:
         - sqlserver
         - authorapi
         - bookseries_api
+        - branch_api
+        - librarianapi
 
   authorapi:
     image: ${DOCKER_REGISTRY-}authorapi
@@ -53,6 +55,19 @@ services:
     depends_on:
         - sqlserver
 
+  librarianapi:
+    image: ${DOCKER_REGISTRY-}librarianapi
+    container_name: librarian_api
+    environment:
+      - ConnectionString=Server=sqlserver;Database=librarian_db;User Id=sa;Password=123456789qQ;Encrypt=False;TrustServerCertificate=True;
+    build:
+      context: .
+      dockerfile: LibrarianApi/Dockerfile
+    ports:
+      - "6604:8081"
+    depends_on:
+        - sqlserver
+
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
@@ -66,6 +81,7 @@ services:
 
 volumes:
   sql_data:
+
 
 
 
