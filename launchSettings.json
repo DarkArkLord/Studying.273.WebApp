@@ -5,7 +5,8 @@
       "commandVersion": "1.0",
       "serviceActions": {
         "darklibrary": "StartDebugging",
-        "authorapi": "StartDebugging"
+        "authorapi": "StartDebugging",
+        "bookseriesapi": "StartDebugging"
       }
     }
   }

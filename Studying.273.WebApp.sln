@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorApi", "AuthorApi\Auth
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiUtils", "WebApiUtils\WebApiUtils.csproj", "{8507F80D-2A23-4AFA-B22D-C0C9F60863BC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apis", "Apis", "{23EB8EE8-96E7-4302-B2EA-0431D3B30692}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSeriesApi", "BookSeriesApi\BookSeriesApi.csproj", "{030B24DC-69BE-46DE-B95D-D251A51F5BEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +43,17 @@ Global
 		{8507F80D-2A23-4AFA-B22D-C0C9F60863BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8507F80D-2A23-4AFA-B22D-C0C9F60863BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8507F80D-2A23-4AFA-B22D-C0C9F60863BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{030B24DC-69BE-46DE-B95D-D251A51F5BEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{030B24DC-69BE-46DE-B95D-D251A51F5BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{030B24DC-69BE-46DE-B95D-D251A51F5BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{030B24DC-69BE-46DE-B95D-D251A51F5BEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{891AB326-9D13-41CD-8407-CE159EF1D2B6} = {23EB8EE8-96E7-4302-B2EA-0431D3B30692}
+		{030B24DC-69BE-46DE-B95D-D251A51F5BEC} = {23EB8EE8-96E7-4302-B2EA-0431D3B30692}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C9C91ED9-95BD-48B9-B0A7-FCB832C4697E}

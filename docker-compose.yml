@@ -12,6 +12,7 @@ services:
     depends_on:
         - sqlserver
         - authorapi
+        - bookseries_api
 
   authorapi:
     image: ${DOCKER_REGISTRY-}authorapi
@@ -21,6 +22,19 @@ services:
     build:
       context: .
       dockerfile: AuthorApi/Dockerfile 
+    ports:
+      - "6601:8081"
+    depends_on:
+        - sqlserver
+
+  bookseriesapi:
+    image: ${DOCKER_REGISTRY-}bookseriesapi
+    container_name: bookseries_api
+    environment:
+      - ConnectionString=Server=sqlserver;Database=bookseries_db;User Id=sa;Password=123456789qQ;Encrypt=False;TrustServerCertificate=True;
+    build:
+      context: .
+      dockerfile: BookSeriesApi/Dockerfile
     ports:
       - "6601:8081"
     depends_on:
@@ -39,4 +53,5 @@ services:
 
 volumes:
   sql_data:
+
 
