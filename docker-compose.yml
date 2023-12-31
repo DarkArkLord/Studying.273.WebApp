@@ -13,8 +13,8 @@ services:
     depends_on:
         - sqlserver
         - authorapi
-        - bookseries_api
-        - branch_api
+        - bookseriesapi
+        - branchapi
         - clientapi
         - librarianapi
 
