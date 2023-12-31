@@ -8,7 +8,8 @@
         "authorapi": "StartDebugging",
         "bookseriesapi": "StartDebugging",
         "branchapi": "StartDebugging",
-        "librarianapi": "StartDebugging"
+        "librarianapi": "StartDebugging",
+        "clientapi": "StartDebugging"
       }
     }
   }

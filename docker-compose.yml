@@ -14,6 +14,7 @@ services:
         - authorapi
         - bookseries_api
         - branch_api
+        - clientapi
         - librarianapi
 
   authorapi:
@@ -55,6 +56,19 @@ services:
     depends_on:
         - sqlserver
 
+  clientapi:
+    image: ${DOCKER_REGISTRY-}clientapi
+    container_name: client_api
+    environment:
+      - ConnectionString=Server=sqlserver;Database=client_db;User Id=sa;Password=123456789qQ;Encrypt=False;TrustServerCertificate=True;
+    build:
+      context: .
+      dockerfile: ClientApi/Dockerfile
+    ports:
+      - "6604:8081"
+    depends_on:
+        - sqlserver
+
   librarianapi:
     image: ${DOCKER_REGISTRY-}librarianapi
     container_name: librarian_api
@@ -64,7 +78,7 @@ services:
       context: .
       dockerfile: LibrarianApi/Dockerfile
     ports:
-      - "6604:8081"
+      - "6605:8081"
     depends_on:
         - sqlserver
 
@@ -81,6 +95,7 @@ services:
 
 volumes:
   sql_data:
+
 
 
 

@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BranchApi", "BranchApi\Bran
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibrarianApi", "LibrarianApi\LibrarianApi.csproj", "{9AA44182-75A7-491C-9ACD-8AED7C4C609D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientApi", "ClientApi\ClientApi.csproj", "{699F33A8-4DA1-4973-A833-DBE969E36810}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{9AA44182-75A7-491C-9ACD-8AED7C4C609D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AA44182-75A7-491C-9ACD-8AED7C4C609D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AA44182-75A7-491C-9ACD-8AED7C4C609D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{699F33A8-4DA1-4973-A833-DBE969E36810}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{699F33A8-4DA1-4973-A833-DBE969E36810}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{699F33A8-4DA1-4973-A833-DBE969E36810}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{699F33A8-4DA1-4973-A833-DBE969E36810}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{030B24DC-69BE-46DE-B95D-D251A51F5BEC} = {23EB8EE8-96E7-4302-B2EA-0431D3B30692}
 		{0D6DCA74-42CB-4E39-B723-4A6A0067F94C} = {23EB8EE8-96E7-4302-B2EA-0431D3B30692}
 		{9AA44182-75A7-491C-9ACD-8AED7C4C609D} = {23EB8EE8-96E7-4302-B2EA-0431D3B30692}
+		{699F33A8-4DA1-4973-A833-DBE969E36810} = {23EB8EE8-96E7-4302-B2EA-0431D3B30692}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C9C91ED9-95BD-48B9-B0A7-FCB832C4697E}
