@@ -1,4 +1,4 @@
-﻿namespace WebApiUtils.BaseApi
+﻿namespace WebApiUtils.Entities
 {
     public class DEntityIdName : DEntityWithId
     {

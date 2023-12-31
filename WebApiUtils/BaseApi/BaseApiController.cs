@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WebApiUtils.Entities;
 
 namespace WebApiUtils.BaseApi
 {
@@ -10,27 +11,29 @@ namespace WebApiUtils.BaseApi
         protected abstract TRepo repository { get; }
 
         [HttpGet("/get-all")]
-        public T[] GetAll()
+        public DResponse<T[]> GetAll()
         {
-            return repository.GetAll();
+            return DResponse<T[]>.Success(repository.GetAll());
         }
 
         [HttpGet("/get-by-id")]
-        public T? GetById(int id)
+        public DResponse<T> GetById(int id)
         {
-            return repository.GetById(id);
+            return DResponse<T>.Success(repository.GetById(id));
         }
 
         [HttpPost("/add")]
-        public bool Add(T item)
+        public virtual DResponse<object> Add(T item)
         {
-            return repository.Add(item);
+            var isAdded = repository.Add(item);
+            return DResponse<object>.Maybe(isAdded, null);
         }
 
         [HttpPost("/update")]
-        public bool Update(T item)
+        public virtual DResponse<object> Update(T item)
         {
-            return repository.Update(item);
+            var isUpdated = repository.Update(item);
+            return DResponse<object>.Maybe(isUpdated, null);
         }
     }
 }

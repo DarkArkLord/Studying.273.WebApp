@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using WebApiUtils.Entities;
 
 namespace WebApiUtils.BaseApi
 {

@@ -1,5 +1,5 @@
 ﻿using System;
-using WebApiUtils.BaseApi;
+using WebApiUtils.Entities;
 
 namespace DataLayer.Entities
 {
