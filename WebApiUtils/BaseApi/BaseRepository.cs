@@ -29,7 +29,7 @@ namespace WebApiUtils.BaseApi
             }
         }
 
-        public virtual T Add(T item)
+        public virtual T? Add(T item)
         {
             using (var db = new BaseContext<T>(connectionString))
             {

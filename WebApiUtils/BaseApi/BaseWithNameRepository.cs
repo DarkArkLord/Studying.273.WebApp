@@ -16,15 +16,15 @@ namespace WebApiUtils.BaseApi
             }
         }
 
-        public override bool Add(T item)
+        public override T? Add(T item)
         {
-            using (var db = new BaseContext<DEntityIdName>(connectionString))
+            using (var db = new BaseContext<T>(connectionString))
             {
                 var dbItem = db.Items.FirstOrDefault(x => x.Name == item.Name);
-                if (dbItem is not null) return false;
-                db.Items.Add(item);
+                if (dbItem is not null) return null;
+                var createdEntity = db.Items.Add(item);
                 db.SaveChanges();
-                return true;
+                return createdEntity.Entity;
             }
         }
     }
