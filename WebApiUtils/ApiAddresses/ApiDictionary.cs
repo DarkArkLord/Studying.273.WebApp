@@ -10,5 +10,7 @@
         public static NamedApiMethods BranchApi { get; private set; } = new NamedApiMethods(protocol, "branch_api", port);
         public static NamedApiMethods ClientApi { get; private set; } = new NamedApiMethods(protocol, "client_api", port);
         public static NamedApiMethods LibratianApi { get; private set; } = new NamedApiMethods(protocol, "librarian_api", port);
+
+        public static NamedApiMethods BookApi { get; private set; } = new NamedApiMethods(protocol, "book_api", port);
     }
 }

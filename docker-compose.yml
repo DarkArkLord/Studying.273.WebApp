@@ -17,6 +17,7 @@ services:
         - branchapi
         - clientapi
         - librarianapi
+        - bookapi
 
   # Named api
   authorapi:
