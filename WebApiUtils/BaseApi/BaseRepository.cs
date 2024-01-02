@@ -29,29 +29,29 @@ namespace WebApiUtils.BaseApi
             }
         }
 
-        public virtual bool Add(T item)
+        public virtual T Add(T item)
         {
             using (var db = new BaseContext<T>(connectionString))
             {
-                db.Items.Add(item);
+                var createdEntity = db.Items.Add(item);
                 db.SaveChanges();
-                return true;
+                return createdEntity.Entity;
             }
         }
 
-        public bool Update(T item)
+        public T? Update(T item)
         {
             using (var db = new BaseContext<T>(connectionString))
             {
                 var dbItem = db.Items.FirstOrDefault(x => x.Id == item.Id);
-                if (dbItem is null) return false;
+                if (dbItem is null) return null;
 
                 var itemId = dbItem.Id;
                 DarkConverter.CopyInto(item, dbItem);
                 dbItem.Id = itemId;
-                db.Items.Update(item);
+                var updatedEntity = db.Items.Update(item);
                 db.SaveChanges();
-                return true;
+                return updatedEntity.Entity;
             }
         }
     }

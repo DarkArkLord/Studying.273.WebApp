@@ -18,6 +18,7 @@ services:
         - clientapi
         - librarianapi
         - bookapi
+        - bookrentapi
 
   # Named api
   authorapi:
@@ -101,6 +102,23 @@ services:
         - authorapi
         - bookseriesapi
 
+  bookrentapi:
+    image: ${DOCKER_REGISTRY-}bookrentapi
+    container_name: bookrent_api
+    environment:
+      - ConnectionString=Server=sqlserver;Database=book_db;User Id=sa;Password=123456789qQ;Encrypt=False;TrustServerCertificate=True;
+    build:
+      context: .
+      dockerfile: BookRentApi/Dockerfile
+    ports:
+      - "6607:8081"
+    depends_on:
+        - sqlserver
+        - bookapi
+        - clientapi
+        - librarianapi
+        - branchapi
+
   # db
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -115,3 +133,4 @@ services:
 
 volumes:
   sql_data:
+

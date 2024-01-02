@@ -10,7 +10,8 @@
         "branchapi": "StartDebugging",
         "librarianapi": "StartDebugging",
         "clientapi": "StartDebugging",
-        "bookapi": "StartDebugging"
+        "bookapi": "StartDebugging",
+        "bookrentapi": "StartDebugging"
       }
     }
   }

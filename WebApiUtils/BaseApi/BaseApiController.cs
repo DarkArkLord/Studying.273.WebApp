@@ -26,15 +26,29 @@ namespace WebApiUtils.BaseApi
         [HttpPost("/add")]
         public virtual DResponse<T> Add(T item)
         {
-            var isAdded = repository.Add(item);
-            return DResponse<T>.Maybe(isAdded, null);
+            var result = repository.Add(item);
+            if (result is null)
+            {
+                return DResponse<T>.Error("Entity was not created", item);
+            }
+            else
+            {
+                return DResponse<T>.Success(result);
+            }
         }
 
         [HttpPost("/update")]
         public virtual DResponse<T> Update(T item)
         {
-            var isUpdated = repository.Update(item);
-            return DResponse<T>.Maybe(isUpdated, null);
+            var result = repository.Update(item);
+            if (result is null)
+            {
+                return DResponse<T>.Error("Entity was not updated", item);
+            }
+            else
+            {
+                return DResponse<T>.Success(result);
+            }
         }
 
         protected DResponse<T>? CheckOtherObjectExists(int? objectId, DarkHttpClient httpClient, string requestUri, string objectName, T? currentEntity)
