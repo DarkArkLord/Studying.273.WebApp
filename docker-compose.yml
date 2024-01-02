@@ -106,7 +106,7 @@ services:
     image: ${DOCKER_REGISTRY-}bookrentapi
     container_name: bookrent_api
     environment:
-      - ConnectionString=Server=sqlserver;Database=book_db;User Id=sa;Password=123456789qQ;Encrypt=False;TrustServerCertificate=True;
+      - ConnectionString=Server=sqlserver;Database=bookrent_db;User Id=sa;Password=123456789qQ;Encrypt=False;TrustServerCertificate=True;
     build:
       context: .
       dockerfile: BookRentApi/Dockerfile
