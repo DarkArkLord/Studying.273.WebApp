@@ -13,12 +13,12 @@ namespace WebApiUtils.BaseApi
             return DResponse<TEntity>.Success(repository.GetByName(name));
         }
 
-        public override DResponse<object> Add(TEntity item)
+        public override DResponse<TEntity> Add(TEntity item)
         {
-            if (item.Name is null || item.Name.Length < 1) return DResponse<object>.Error("Entity name can not be empty.");
+            if (item.Name is null || item.Name.Length < 1) return DResponse<TEntity>.Error("Entity name can not be empty.", item);
 
             var dbItem = repository.GetByName(item.Name);
-            if (dbItem is not null) return DResponse<object>.Error($"Entity with name \"{item.Name}\" already exists.");
+            if (dbItem is not null) return DResponse<TEntity>.Error($"Entity with name \"{item.Name}\" already exists.", item);
 
             return base.Add(item);
         }

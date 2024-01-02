@@ -1,6 +1,6 @@
 ﻿namespace WebApiUtils.Entities
 {
-    public class DResponse<T>
+    public class DResponse<T> where T : class
     {
         public bool IsSuccess { get; set; }
         public T? Data { get; set; }
@@ -20,14 +20,14 @@
             Message = null,
         };
 
-        public static DResponse<object> Error(string message) => new DResponse<object>
+        public static DResponse<T> Error(string message, T? data = null) => new DResponse<T>
         {
             IsSuccess = false,
-            Data = null,
+            Data = data,
             Message = message,
         };
 
-        public static DResponse<T> Maybe(bool isSuccess, T? data) => new DResponse<T>
+        public static DResponse<T> Maybe(bool isSuccess, T? data = null) => new DResponse<T>
         {
             IsSuccess = isSuccess,
             Data = data,
