@@ -8,7 +8,7 @@
 
     public class DBookLinked : DEntityIdName
     {
-        public DEntityIdName? AuthorId { get; set; }
-        public DEntityIdName? SeriesId { get; set; }
+        public DEntityIdName? Author { get; set; }
+        public DEntityIdName? Series { get; set; }
     }
 }
