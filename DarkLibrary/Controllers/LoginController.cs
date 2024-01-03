@@ -11,7 +11,7 @@ namespace DarkLibrary.Controllers
         protected BaseWithNameRepository<DUser> repository => new BaseWithNameRepository<DUser>(connectionString);
 
         [HttpGet("/register")]
-        public IActionResult RegisterGet()
+        public IActionResult Register()
         {
             ViewData["Action"] = "./register";
             ViewData["Title"] = "Register";
@@ -67,7 +67,7 @@ namespace DarkLibrary.Controllers
         }
 
         [HttpGet("/login")]
-        public IActionResult LoginGet()
+        public IActionResult Login()
         {
             ViewData["Action"] = "./login";
             ViewData["Title"] = "Login";
@@ -104,8 +104,8 @@ namespace DarkLibrary.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost("/logout")]
-        public IActionResult LogoutPost()
+        [HttpGet("/logout")]
+        public IActionResult Logout()
         {
             // logout
 
