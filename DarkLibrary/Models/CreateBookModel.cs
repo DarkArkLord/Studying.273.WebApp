@@ -1,11 +1,12 @@
-﻿using DataLayer.Entities;
+﻿using WebApiUtils.Entities;
 
 namespace DarkLibrary.Models
 {
     public class CreateBookModel
     {
-        public IEnumerable<DAuthor> Authors { get; set; }
-        public IEnumerable<DBookSeries> Series { get; set; }
+        public string Name { get; set; }
+        public IEnumerable<DEntityIdName> Authors { get; set; }
+        public IEnumerable<DEntityIdName> Series { get; set; }
         public string ErrorText { get; set; }
     }
 }

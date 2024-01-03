@@ -1,8 +1,9 @@
 ﻿using DarkLibrary.Models;
-using DataLayer;
-using DataLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApiUtils;
+using WebApiUtils.ApiAddresses;
+using WebApiUtils.Entities;
 
 namespace DarkLibrary.Controllers
 {
@@ -11,13 +12,18 @@ namespace DarkLibrary.Controllers
     {
         public IActionResult Index()
         {
-            using (var db = new LibraryDbContext())
+            using (var client = new DarkHttpClient())
             {
-                var items = db.Books
-                    .Include(book => book.Author)
-                    .Include(book => book.Series)
-                    .ToArray();
-                return View("Index", items);
+                try
+                {
+                    var books = client.GetAllFrom<DBook>(ApiDictionary.BookApi);
+                    var items = books.Data.Select(item => MapBookToLinks(item, client));
+                    return View("Index", items);
+                }
+                catch (Exception ex)
+                {
+                    return ReturnError(ex.Message);
+                }
             }
         }
 
@@ -25,7 +31,7 @@ namespace DarkLibrary.Controllers
         [Route("create")]
         public IActionResult Create()
         {
-            using (var db = new LibraryDbContext())
+            using (var db = new DarkHttpClient())
             {
                 var model = PrepareCreateBookModel(db);
                 return View("Create", model);
@@ -37,67 +43,107 @@ namespace DarkLibrary.Controllers
         public IActionResult CreatePost()
         {
             var name = Request.Form["name"].ToString().Trim();
-            var authorIdInput = Request.Form["authorId"];
-            var seriesIdInput = Request.Form["seriesId"];
+            var authorIdInput = Request.Form["authorId"].ToString();
+            var seriesIdInput = Request.Form["seriesId"].ToString();
 
-            using (var db = new LibraryDbContext())
+            using (var client = new DarkHttpClient())
             {
-                if (name is null || name.Length < 1)
-                {
-                    var model = PrepareCreateBookModel(db);
-                    model.ErrorText = "Error: Name can not be empty";
-                    return View("Create", model);
-                }
-
-                if (db.Books.Any(item => item.Name == name))
-                {
-                    var model = PrepareCreateBookModel(db);
-                    model.ErrorText = $"Error: Book series \"{name}\" already exists";
-                    return View("Create", model);
-                }
-
                 var item = new DBook
                 {
                     Name = name
                 };
 
-                if (int.TryParse(authorIdInput, out int authorId))
+                if (authorIdInput is not null && authorIdInput.Length > 0)
                 {
-                    var author = db.Authors.FirstOrDefault(author => author.Id == authorId);
-                    if (author is null)
+                    if (int.TryParse(authorIdInput, out int authorId))
                     {
-                        var model = PrepareCreateBookModel(db);
+                        item.AuthorId = authorId;
+                    }
+                    else
+                    {
+                        var model = PrepareCreateBookModel(client);
                         model.ErrorText = $"Error: Incorrect author id";
                         return View("Create", model);
                     }
-                    item.Author = author;
                 }
 
-                if (int.TryParse(seriesIdInput, out int seriesId))
+                if (seriesIdInput is not null && seriesIdInput.Length > 0)
                 {
-                    var series = db.BookSeries.FirstOrDefault(series => series.Id == seriesId);
-                    if (series is null)
+                    if (int.TryParse(seriesIdInput, out int seriesId))
                     {
-                        var model = PrepareCreateBookModel(db);
+                        item.SeriesId = seriesId;
+                    }
+                    else
+                    {
+                        var model = PrepareCreateBookModel(client);
                         model.ErrorText = $"Error: Incorrect series id";
                         return View("Create", model);
                     }
-                    item.Series = series;
                 }
 
-                db.Books.Add(item);
-                db.SaveChanges();
+                var response = client.AddFrom(ApiDictionary.BookApi, item);
+
+                if (response is null) return ReturnError("Request error");
+                if (!response.IsSuccess)
+                {
+                    var model = PrepareCreateBookModel(client);
+                    model.ErrorText = response.Message;
+                    return View("Create", model);
+                }
 
                 return RedirectToAction("Index");
             }
         }
 
-        private CreateBookModel PrepareCreateBookModel(LibraryDbContext db)
+        private IActionResult ReturnError(string? errorText)
         {
+            ViewData["ErrorText"] = errorText;
+            return View("Views/Shared/ErrorView.cshtml");
+        }
+
+        private DBookLinked MapBookToLinks(DBook item, DarkHttpClient client)
+        {
+            var result = new DBookLinked
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Author = null,
+                Series = null,
+            };
+
+            if (item.AuthorId is not null)
+            {
+                result.Author = GetBookPart(client, ApiDictionary.AuthorApi, item.Id, (int)item.AuthorId, "Author");
+            }
+
+            if (item.SeriesId is not null)
+            {
+                result.Series = GetBookPart(client, ApiDictionary.BookSeriesApi, item.Id, (int)item.SeriesId, "Series");
+            }
+
+            return result;
+        }
+
+        private DEntityIdName GetBookPart(DarkHttpClient client, BaseApiMethods api, int itemId, int partId, string name)
+        {
+            var part = client.GetByIdFrom<DEntityIdName>(api, partId);
+
+            if (part is null) throw new Exception($"Request error for book (id: {itemId}) {name} (id: {partId})");
+            if (!part.IsSuccess) throw new Exception($"Request error for book (id: {itemId}) {name} (id: {partId})");
+            if (part.Data is null) throw new Exception($"{name} (id: {partId}) for book (id: {itemId}) not exists");
+
+            return part.Data;
+        }
+
+        private CreateBookModel PrepareCreateBookModel(DarkHttpClient client)
+        {
+            var authors = client.GetAllFrom<DEntityIdName>(ApiDictionary.AuthorApi);
+            var series = client.GetAllFrom<DEntityIdName>(ApiDictionary.BookSeriesApi);
+
             return new CreateBookModel
             {
-                Authors = db.Authors.ToArray(),
-                Series = db.BookSeries.ToArray(),
+                Authors = authors.Data,
+                Series = series.Data,
             };
         }
     }

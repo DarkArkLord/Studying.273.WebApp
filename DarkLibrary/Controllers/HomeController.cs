@@ -1,7 +1,6 @@
 using DarkLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using WebApiUtils;
 
 namespace DarkLibrary.Controllers
 {
@@ -16,13 +15,6 @@ namespace DarkLibrary.Controllers
 
         public IActionResult Index()
         {
-            //using (var client = new DarkHttpClient())
-            //{
-            //    var response = await client.CreateRequest()
-            //        .SetUri("https://author_api:8081/Count")
-            //        .SendAsync();
-            //    string counter = await response.Content.ReadAsStringAsync();
-            //}
             return View();
         }
 

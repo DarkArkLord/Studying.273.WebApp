@@ -1,20 +1,16 @@
-﻿using Azure.Core;
-using DataLayer.Entities;
-using DataLayer;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebApiUtils;
+using WebApiUtils.ApiAddresses;
 using WebApiUtils.Entities;
 
 namespace DarkLibrary.Controllers
 {
-    public abstract class BaseIdNameEntityControllers<TDbContext, TEntity> : Controller
-        where TDbContext : DbContext
-        where TEntity : DEntityIdName, new()
+    public abstract class BaseIdNameEntityControllers : Controller
     {
         protected abstract string IndexTitle { get; }
         protected abstract string CreateTitle { get; }
         protected abstract string ControllerName { get; }
+        protected abstract NamedApiMethods ApiAddresses { get; }
 
         protected IActionResult ReturnIndexWithList(IEnumerable<DEntityIdName> items)
         {
@@ -31,15 +27,22 @@ namespace DarkLibrary.Controllers
             return View("Views/IdNameViews/Create.cshtml");
         }
 
-        protected abstract TDbContext CreateDbContext();
-        protected abstract DbSet<TEntity> GetDbSet(TDbContext context);
+        protected IActionResult ReturnError(string? errorText)
+        {
+            ViewData["ErrorText"] = errorText;
+            return View("Views/Shared/ErrorView.cshtml");
+        }
 
         public IActionResult Index()
         {
-            using (var db = CreateDbContext())
+            using (var client = new DarkHttpClient())
             {
-                var items = GetDbSet(db).ToArray();
-                return ReturnIndexWithList(items);
+                var items = client.GetAllFrom<DEntityIdName>(ApiAddresses);
+
+                if (items is null) return ReturnError("Request error");
+                if (!items.IsSuccess) return ReturnError(items.Message);
+
+                return ReturnIndexWithList(items.Data!);
             }
         }
 
@@ -55,22 +58,14 @@ namespace DarkLibrary.Controllers
         public IActionResult CreatePost()
         {
             var name = Request.Form["name"].ToString().Trim();
-            if (name is null || name.Length < 1)
-            {
-                return ReturnCreateWithErrorText("Error: Name can not be empty");
-            }
 
-            using (var db = CreateDbContext())
+            using (var client = new DarkHttpClient())
             {
-                if (GetDbSet(db).Any(item => item.Name == name))
-                {
-                    return ReturnCreateWithErrorText($"Error: {ControllerName} \"{name}\" already exists", name);
-                }
-
                 var item = new DEntityIdName { Name = name };
-                TEntity entity = DarkConverter.Convert<DEntityIdName, TEntity>(item)!;
-                GetDbSet(db).Add(entity);
-                db.SaveChanges();
+                var response = client.AddFrom(ApiAddresses, item);
+
+                if (response is null) return ReturnError("Request error");
+                if (!response.IsSuccess) return ReturnCreateWithErrorText(response.Message, name);
 
                 return RedirectToAction("Index");
             }
@@ -79,61 +74,51 @@ namespace DarkLibrary.Controllers
 
 
     [Route("/authors")]
-    public class AuthorController : BaseIdNameEntityControllers<LibraryDbContext, DAuthor>
+    public class AuthorController : BaseIdNameEntityControllers
     {
         protected override string IndexTitle => "Author menu";
         protected override string CreateTitle => "Create Author";
         protected override string ControllerName => "Author";
-
-        protected override LibraryDbContext CreateDbContext() => new LibraryDbContext();
-        protected override DbSet<DAuthor> GetDbSet(LibraryDbContext context) => context.Authors;
+        protected override NamedApiMethods ApiAddresses => ApiDictionary.AuthorApi;
     }
 
 
     [Route("/series")]
-    public class BookSeriesController : BaseIdNameEntityControllers<LibraryDbContext, DBookSeries>
+    public class BookSeriesController : BaseIdNameEntityControllers
     {
         protected override string IndexTitle => "Series menu";
         protected override string CreateTitle => "Create Book Series";
         protected override string ControllerName => "BookSeries";
-
-        protected override LibraryDbContext CreateDbContext() => new LibraryDbContext();
-        protected override DbSet<DBookSeries> GetDbSet(LibraryDbContext context) => context.BookSeries;
+        protected override NamedApiMethods ApiAddresses => ApiDictionary.BookSeriesApi;
     }
 
 
     [Route("/branch")]
-    public class BranchController : BaseIdNameEntityControllers<LibraryDbContext, DBranch>
+    public class BranchController : BaseIdNameEntityControllers
     {
         protected override string IndexTitle => "Branch menu";
         protected override string CreateTitle => "Create Branch";
         protected override string ControllerName => "Branch";
-
-        protected override LibraryDbContext CreateDbContext() => new LibraryDbContext();
-        protected override DbSet<DBranch> GetDbSet(LibraryDbContext context) => context.Branches;
+        protected override NamedApiMethods ApiAddresses => ApiDictionary.BranchApi;
     }
 
 
     [Route("/librarian")]
-    public class LibrarianController : BaseIdNameEntityControllers<LibraryDbContext, DLibrarian>
+    public class LibrarianController : BaseIdNameEntityControllers
     {
         protected override string IndexTitle => "Librarian menu";
         protected override string CreateTitle => "Create Librarian";
         protected override string ControllerName => "Librarian";
-
-        protected override LibraryDbContext CreateDbContext() => new LibraryDbContext();
-        protected override DbSet<DLibrarian> GetDbSet(LibraryDbContext context) => context.Librarians;
+        protected override NamedApiMethods ApiAddresses => ApiDictionary.LibratianApi;
     }
 
 
     [Route("/client")]
-    public class ClientController : BaseIdNameEntityControllers<LibraryDbContext, DClient>
+    public class ClientController : BaseIdNameEntityControllers
     {
         protected override string IndexTitle => "Client menu";
         protected override string CreateTitle => "Create Client";
         protected override string ControllerName => "Client";
-
-        protected override LibraryDbContext CreateDbContext() => new LibraryDbContext();
-        protected override DbSet<DClient> GetDbSet(LibraryDbContext context) => context.Clients;
+        protected override NamedApiMethods ApiAddresses => ApiDictionary.ClientApi;
     }
 }

@@ -1,8 +1,8 @@
 ﻿using DarkLibrary.Models;
-using DataLayer;
-using DataLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using WebApiUtils;
+using WebApiUtils.ApiAddresses;
+using WebApiUtils.Entities;
 
 namespace DarkLibrary.Controllers
 {
@@ -11,15 +11,18 @@ namespace DarkLibrary.Controllers
     {
         public IActionResult Index()
         {
-            using (var db = new LibraryDbContext())
+            using (var client = new DarkHttpClient())
             {
-                var items = db.BookRents
-                    .Include(rent => rent.Book)
-                    .Include(rent => rent.Client)
-                    .Include(rent => rent.Librarian)
-                    .Include(rent => rent.Branch)
-                    .ToArray();
-                return View("Index", items);
+                try
+                {
+                    var rents = client.GetAllFrom<DBookRent>(ApiDictionary.BookRentApi);
+                    var items = rents.Data.Select(item => MapRentToLinks(item, client));
+                    return View("Index", items);
+                }
+                catch (Exception ex)
+                {
+                    return ReturnError(ex.Message);
+                }
             }
         }
 
@@ -27,9 +30,9 @@ namespace DarkLibrary.Controllers
         [Route("create")]
         public IActionResult Create()
         {
-            using (var db = new LibraryDbContext())
+            using (var client = new DarkHttpClient())
             {
-                var model = PrepareCreateRentModel(db);
+                var model = PrepareCreateRentModel(client);
                 return View("Create", model);
             }
         }
@@ -46,91 +49,70 @@ namespace DarkLibrary.Controllers
             var rentDateInput = Request.Form["rentDate"];
             var rentDaysInput = Request.Form["rentDays"];
 
-            using (var db = new LibraryDbContext())
+            using (var client = new DarkHttpClient())
             {
                 var item = new DBookRent();
 
                 if (DateTime.TryParse(rentDateInput, out DateTime rentDate))
                 {
-                    item.RentDate = rentDate;
+                    item.OpenDate = rentDate;
                 }
                 else
                 {
-                    return CreateWithError(db, "Error: Incorrect rent date");
+                    return CreateWithError(client, "Error: Incorrect open rent date");
                 }
 
                 if (int.TryParse(rentDaysInput, out int rentDays))
                 {
-                    if (rentDays < 1)
-                    {
-                        return CreateWithError(db, "Error: Rent days must be positive");
-                    }
-
                     item.RentDays = rentDays;
                 }
                 else
                 {
-                    return CreateWithError(db, "Error: Incorrect rent days");
+                    return CreateWithError(client, "Error: Incorrect rent days");
                 }
 
                 if (int.TryParse(bookIdInput, out int bookId))
                 {
-                    var book = db.Books.FirstOrDefault(book => book.Id == bookId);
-                    if (book is null)
-                    {
-                        return CreateWithError(db, $"Error: No book with \"{bookId}\" id");
-                    }
-                    item.Book = book;
+                    item.BookId = bookId;
                 }
                 else
                 {
-                    return CreateWithError(db, "Error: Incorrect book id");
+                    return CreateWithError(client, "Error: Incorrect book id");
                 }
 
                 if (int.TryParse(clientIdInput, out int clientId))
                 {
-                    var client = db.Clients.FirstOrDefault(client => client.Id == clientId);
-                    if (client is null)
-                    {
-                        return CreateWithError(db, $"Error: No client with \"{clientId}\" id");
-                    }
-                    item.Client = client;
+                    item.ClientId = clientId;
                 }
                 else
                 {
-                    return CreateWithError(db, "Error: Incorrect client id");
+                    return CreateWithError(client, "Error: Incorrect client id");
                 }
 
                 if (int.TryParse(librarianIdInput, out int librarianId))
                 {
-                    var librarian = db.Librarians.FirstOrDefault(librarian => librarian.Id == librarianId);
-                    if (librarian is null)
-                    {
-                        return CreateWithError(db, $"Error: No librarian with \"{librarianId}\" id");
-                    }
-                    item.Librarian = librarian;
+                    item.LibrarianId = librarianId;
                 }
                 else
                 {
-                    return CreateWithError(db, "Error: Incorrect librarian id");
+                    return CreateWithError(client, "Error: Incorrect librarian id");
                 }
 
                 if (int.TryParse(branchIdInput, out int branchId))
                 {
-                    var branch = db.Branches.FirstOrDefault(branch => branch.Id == branchId);
-                    if (branch is null)
-                    {
-                        return CreateWithError(db, $"Error: No branch with \"{branchId}\" id");
-                    }
-                    item.Branch = branch;
+                    item.BranchId = branchId;
                 }
                 else
                 {
-                    return CreateWithError(db, "Error: Incorrect branch id");
+                    return CreateWithError(client, "Error: Incorrect branch id");
                 }
 
-                db.BookRents.Add(item);
-                db.SaveChanges();
+                var response = client.AddFrom(ApiDictionary.BookRentApi, item);
+                if (response is null) return ReturnError("Request error");
+                if (!response.IsSuccess)
+                {
+                    return CreateWithError(client, response.Message);
+                }
 
                 return RedirectToAction("Index");
             }
@@ -140,14 +122,21 @@ namespace DarkLibrary.Controllers
         [Route("close/{id}")]
         public IActionResult Close(int id)
         {
-            using (var db = new LibraryDbContext())
+            using (var client = new DarkHttpClient())
             {
-                var model = PrepareCloseRentModel(db, id);
-                if (model.Rent is null)
+                try
                 {
-                    model.ErrorText = "Error: Incorrect rent id";
+                    var model = PrepareCloseRentModel(client, id);
+                    if (model.Rent is null)
+                    {
+                        model.ErrorText = "Error: Incorrect rent id";
+                    }
+                    return View("Close", model);
                 }
-                return View("Close", model);
+                catch (Exception ex)
+                {
+                    return ReturnError(ex.Message);
+                }
             }
         }
 
@@ -155,57 +144,58 @@ namespace DarkLibrary.Controllers
         [Route("calculate/{id}")]
         public IActionResult CloseCalculate(int id)
         {
-            using (var db = new LibraryDbContext())
+            using (var client = new DarkHttpClient())
             {
-                var model = PrepareCloseRentModel(db, id);
-                if (model.Rent is null)
+                try
                 {
-                    model.ErrorText = "Error: Incorrect rent id";
+                    var model = PrepareCloseRentModel(client, id);
+                    if (model.Rent is null)
+                    {
+                        model.ErrorText = "Error: Incorrect rent id";
+                        return View("Close", model);
+                    }
+
+                    var rentEndDateInput = Request.Form["rentEndDate"];
+                    var penaltyInput = Request.Form["penalty"];
+
+                    if (DateTime.TryParse(rentEndDateInput, out DateTime rentEndDate))
+                    {
+                        model.EndDate = rentEndDate;
+                    }
+                    else
+                    {
+                        model.ErrorText = "Error: Incorrect rent end date";
+                        return View("Close", model);
+                    }
+
+                    if (int.TryParse(penaltyInput, out int penaltyByDay))
+                    {
+                        model.PenaltyByDay = penaltyByDay;
+                    }
+                    else
+                    {
+                        model.ErrorText = "Error: Incorrect penalty";
+                        return View("Close", model);
+                    }
+
+                    var response = client.CreateRequest()
+                        .SetMethodGet()
+                        .SetUri($"{ApiDictionary.BookRentApi.Calculate}?rentId={id}&closeDate={rentEndDate}&penaltyByDay={penaltyByDay}")
+                        .SendAsync().Result.Content
+                        .ReadFromJsonAsync(typeof(DResponse<DBookRent>)).Result as DResponse<DBookRent>;
+
+                    if (response is null) throw new Exception($"Request error for rent (id: {id}) calculation");
+                    else if (!response.IsSuccess) model.ErrorText = response.Message;
+                    else if (response.Data is null) throw new Exception($"Request error for rent (id: {id}) calculation");
+
+                    model.Rent = MapRentToLinks(response.Data, client);
+
                     return View("Close", model);
                 }
-
-                var rentEndDateInput = Request.Form["rentEndDate"];
-                var penaltyInput = Request.Form["penalty"];
-
-                if (!DateTime.TryParse(rentEndDateInput, out DateTime rentEndDate))
+                catch (Exception ex)
                 {
-                    model.ErrorText = "Error: Incorrect rent end date";
-                    return View("Close", model);
+                    return ReturnError(ex.Message);
                 }
-
-                if (rentEndDate < model.Rent.RentDate)
-                {
-                    model.ErrorText = "Error: Rent end must be great or equal rent start date";
-                    return View("Close", model);
-                }
-
-                model.EndDate = rentEndDate;
-
-                if (!int.TryParse(penaltyInput, out int penaltyByDay))
-                {
-                    model.ErrorText = "Error: Incorrect penalty";
-                    return View("Close", model);
-                }
-
-                if (penaltyByDay < 1)
-                {
-                    model.ErrorText = "Error: Penalty must be positive";
-                    return View("Close", model);
-                }
-
-                model.PenaltyByDay = penaltyByDay;
-
-                var rentRealDays = (int)(model.EndDate - model.Rent.RentDate).Value.TotalDays;
-                if (rentRealDays > model.Rent.RentDays)
-                {
-                    model.TotalPenalty = (rentRealDays - model.Rent.RentDays) * penaltyByDay;
-                }
-                else
-                {
-                    model.TotalPenalty = 0;
-                }
-
-                return View("Close", model);
             }
         }
 
@@ -213,12 +203,13 @@ namespace DarkLibrary.Controllers
         [Route("close/{id}")]
         public IActionResult ClosePost(int id)
         {
-            using (var db = new LibraryDbContext())
+            using (var client = new DarkHttpClient())
             {
-                var model = PrepareCloseRentModel(db, id);
+                var model = PrepareCloseRentModel(client, id);
                 if (model.Rent is null)
                 {
                     model.ErrorText = "Error: Incorrect rent id";
+                    return View("Close", model);
                 }
 
                 var rentEndDateInput = Request.Form["rentEndDate"];
@@ -236,43 +227,105 @@ namespace DarkLibrary.Controllers
                     return View("Close", model);
                 }
 
-                model.Rent.ReturnDate = rentEndDate;
-                model.Rent.Penalty = penalty;
-                db.SaveChanges();
+                var response = client.CreateRequest()
+                    .SetMethodGet()
+                    .SetUri($"{ApiDictionary.BookRentApi.Close}?rentId={id}&closeDate={rentEndDate}&penalty={penalty}")
+                    .SendAsync().Result.Content
+                    .ReadFromJsonAsync(typeof(DResponse<DBookRent>)).Result as DResponse<DBookRent>;
+
+                if (response is null)
+                {
+                    model.ErrorText = $"Request error for rent (id: {id}) calculation";
+                    return View("Close", model);
+                }
+                if (!response.IsSuccess)
+                {
+                    model.ErrorText = response.Message;
+                    return View("Close", model);
+                }
+                if (response.Data is null)
+                {
+                    model.ErrorText = $"Request error for rent (id: {id}) calculation";
+                    return View("Close", model);
+                }
 
                 return RedirectToAction("Index");
             }
         }
 
-        private CreateRentModel PrepareCreateRentModel(LibraryDbContext db)
+        private IActionResult ReturnError(string? errorText)
         {
+            ViewData["ErrorText"] = errorText;
+            return View("Views/Shared/ErrorView.cshtml");
+        }
+
+        private DBookRentLinked MapRentToLinks(DBookRent item, DarkHttpClient client)
+        {
+            if (item is null) return null;
+
+            var result = new DBookRentLinked
+            {
+                Id = item.Id,
+                Book = null,
+                Client = null,
+                Librarian = null,
+                Branch = null,
+                OpenDate = item.OpenDate,
+                RentDays = item.RentDays,
+                CloseDate = item.CloseDate,
+                Penalty = item.Penalty,
+            };
+
+            result.Book = GetBookPart<DBook>(client, ApiDictionary.BookApi, item.Id, item.BookId, "Book");
+            result.Client = GetBookPart<DEntityIdName>(client, ApiDictionary.ClientApi, item.Id, item.ClientId, "Client");
+            result.Librarian = GetBookPart<DEntityIdName>(client, ApiDictionary.LibratianApi, item.Id, item.LibrarianId, "OpenLibrarian");
+            result.Branch = GetBookPart<DEntityIdName>(client, ApiDictionary.BranchApi, item.Id, item.BranchId, "Branch");
+
+            return result;
+        }
+
+        private T GetBookPart<T>(DarkHttpClient client, BaseApiMethods api, int itemId, int partId, string name)
+            where T : class
+        {
+            var part = client.GetByIdFrom<T>(api, partId);
+
+            if (part is null) throw new Exception($"Request error for rent (id: {itemId}) {name} (id: {partId})");
+            if (!part.IsSuccess) throw new Exception($"Request error for rent (id: {itemId}) {name} (id: {partId})");
+            if (part.Data is null) throw new Exception($"{name} (id: {partId}) for rent (id: {itemId}) not exists");
+
+            return part.Data;
+        }
+
+        private CreateRentModel PrepareCreateRentModel(DarkHttpClient client)
+        {
+            var books = client.GetAllFrom<DBook>(ApiDictionary.BookApi);
+            var clients = client.GetAllFrom<DEntityIdName>(ApiDictionary.ClientApi);
+            var librarians = client.GetAllFrom<DEntityIdName>(ApiDictionary.LibratianApi);
+            var branch = client.GetAllFrom<DEntityIdName>(ApiDictionary.BranchApi);
+
             return new CreateRentModel
             {
-                Books = db.Books.ToArray(),
-                Clients = db.Clients.ToArray(),
-                Librarians = db.Librarians.ToArray(),
-                Branches = db.Branches.ToArray(),
+                Books = books.Data,
+                Clients = clients.Data,
+                Librarians = librarians.Data,
+                Branches = branch.Data,
             };
         }
 
-        private IActionResult CreateWithError(LibraryDbContext db, string message)
+        private IActionResult CreateWithError(DarkHttpClient client, string message)
         {
-            var model = PrepareCreateRentModel(db);
+            var model = PrepareCreateRentModel(client);
             model.ErrorText = message;
             return View("Create", model);
         }
 
-        private CloseRentModel PrepareCloseRentModel(LibraryDbContext db, int id)
+        private CloseRentModel PrepareCloseRentModel(DarkHttpClient client, int id)
         {
+            var rent = client.GetByIdFrom<DBookRent>(ApiDictionary.BookRentApi, id);
             return new CloseRentModel
             {
                 RentId = id,
-                Rent = db.BookRents
-                    .Include(rent => rent.Book)
-                    .Include(rent => rent.Client)
-                    .Include(rent => rent.Librarian)
-                    .Include(rent => rent.Branch)
-                    .FirstOrDefault(rent => rent.Id == id)
+                Rent = MapRentToLinks(rent.Data, client),
             };
         }
     }

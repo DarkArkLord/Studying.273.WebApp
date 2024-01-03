@@ -79,7 +79,7 @@ namespace BookRentApi.Controllers
         }
 
         [HttpGet("/calculate")]
-        public DResponse<DBookRent> CalculateRentGet(int rentId, DateTime closeDate, int rentByDay)
+        public DResponse<DBookRent> CalculateRentGet(int rentId, DateTime closeDate, int penaltyByDay)
         {
             var item = repository.GetById(rentId);
             if (item is null) return DResponse<DBookRent>.Error($"Rent with id {rentId} not exists");
@@ -91,7 +91,7 @@ namespace BookRentApi.Controllers
                 return DResponse<DBookRent>.Error("CloseDate must be greater then OpenDate", item);
             }
 
-            if (rentByDay < 0)
+            if (penaltyByDay < 0)
             {
                 return DResponse<DBookRent>.Error("Penalty must be greater or equal than 0");
             }
@@ -103,14 +103,14 @@ namespace BookRentApi.Controllers
             }
             else
             {
-                item.Penalty = rentDays * rentByDay;
+                item.Penalty = rentDays * penaltyByDay;
             }
 
             return DResponse<DBookRent>.Success(item);
         }
 
         [HttpPost("/close")]
-        public DResponse<DBookRent> CloseRentPost(int rentId, int librarianid, DateTime closeDate, int rentByDay)
+        public DResponse<DBookRent> CloseRentPost(int rentId, DateTime closeDate, int penalty)
         {
             var item = repository.GetById(rentId);
             if (item is null) return DResponse<DBookRent>.Error($"Rent with id {rentId} not exists");
@@ -122,19 +122,10 @@ namespace BookRentApi.Controllers
                 return DResponse<DBookRent>.Error("CloseDate must be greater then OpenDate", item);
             }
 
-            if (rentByDay < 0)
+            item.Penalty = penalty;
+            if (penalty < 0)
             {
                 return DResponse<DBookRent>.Error("Penalty must be greater or equal than 0");
-            }
-
-            var rentDays = (int)(item.CloseDate - item.OpenDate).Value.TotalDays;
-            if (rentDays < item.RentDays)
-            {
-                item.Penalty = 0;
-            }
-            else
-            {
-                item.Penalty = rentDays * rentByDay;
             }
 
             return base.Update(item);

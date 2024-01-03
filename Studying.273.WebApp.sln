@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{E92B5CF9-7279-4756-B4D3-F9A2A5EA7B60}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DarkLibrary", "DarkLibrary\DarkLibrary.csproj", "{5EB553E5-F049-43F2-A37A-D1B27D869B1E}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{048CF38F-7C20-463E-A2F5-BBC2AE229960}"
@@ -33,10 +31,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E92B5CF9-7279-4756-B4D3-F9A2A5EA7B60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E92B5CF9-7279-4756-B4D3-F9A2A5EA7B60}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E92B5CF9-7279-4756-B4D3-F9A2A5EA7B60}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E92B5CF9-7279-4756-B4D3-F9A2A5EA7B60}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5EB553E5-F049-43F2-A37A-D1B27D869B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5EB553E5-F049-43F2-A37A-D1B27D869B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EB553E5-F049-43F2-A37A-D1B27D869B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU

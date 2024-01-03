@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DataLayer.Entities.DBookRent>
+﻿@model IEnumerable<WebApiUtils.Entities.DBookRentLinked>
 
 @{
     ViewData["Title"] = "Book rent menu";
@@ -63,13 +63,13 @@
                     @(item.Branch.Name)
                 </td>
                 <td>
-                    @(item.RentDate.ToShortDateString())
+                    @(item.OpenDate.ToShortDateString())
                 </td>
                 <td>
                     @(item.RentDays)
                 </td>
                 <td>
-                    @(item.ReturnDate?.ToShortDateString() ?? "--")
+                    @(item.CloseDate?.ToShortDateString() ?? "--")
                 </td>
                 <td>
                     @(item.Penalty?.ToString() ?? "--")
