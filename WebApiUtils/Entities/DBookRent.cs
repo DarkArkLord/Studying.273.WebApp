@@ -6,11 +6,10 @@ namespace WebApiUtils.Entities
     {
         public int BookId { get; set; }
         public int ClientId { get; set; }
-        public int OpenLibrarianId { get; set; }
+        public int LibrarianId { get; set; }
         public int BranchId { get; set; }
         public DateTime OpenDate { get; set; }
         public int RentDays { get; set; }
-        public int? CloseLibrarianId { get; set; }
         public DateTime? CloseDate { get; set; }
         public int? Penalty { get; set; }
     }
@@ -19,11 +18,10 @@ namespace WebApiUtils.Entities
     {
         public DBook Book { get; set; }
         public DEntityIdName Client { get; set; }
-        public DEntityIdName OpenLibrarian { get; set; }
+        public DEntityIdName Librarian { get; set; }
         public DEntityIdName Branch { get; set; }
         public DateTime OpenDate { get; set; }
         public int RentDays { get; set; }
-        public DEntityIdName? CloseLibrarian { get; set; }
         public DateTime? CloseDate { get; set; }
         public int? Penalty { get; set; }
     }
