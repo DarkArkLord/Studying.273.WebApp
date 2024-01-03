@@ -1,12 +1,13 @@
 ﻿using DarkLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WebApiUtils;
 using WebApiUtils.ApiAddresses;
 using WebApiUtils.Entities;
 
 namespace DarkLibrary.Controllers
 {
+    [Authorize]
     [Route("/book")]
     public class BookController : Controller
     {

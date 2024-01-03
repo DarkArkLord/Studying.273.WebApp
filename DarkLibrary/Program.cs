@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 namespace DarkLibrary
 {
     public class Program
@@ -8,6 +10,9 @@ namespace DarkLibrary
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => options.LoginPath = "/login");
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
 

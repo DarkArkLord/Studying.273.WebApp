@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WebApiUtils.BaseApi;
 using WebApiUtils.Entities;
 
@@ -61,7 +64,7 @@ namespace DarkLibrary.Controllers
                 return View("Login");
             }
 
-            // auth
+            LoginAsUser(login);
 
             return RedirectToAction("Index", "Home");
         }
@@ -99,7 +102,7 @@ namespace DarkLibrary.Controllers
                 return View("Login");
             }
 
-            // auth
+            LoginAsUser(login);
 
             return RedirectToAction("Index", "Home");
         }
@@ -107,7 +110,7 @@ namespace DarkLibrary.Controllers
         [HttpGet("/logout")]
         public IActionResult Logout()
         {
-            // logout
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Index", "Home");
         }
@@ -123,6 +126,13 @@ namespace DarkLibrary.Controllers
             }
 
             return result;
+        }
+
+        private void LoginAsUser(string login)
+        {
+            List<Claim> claims = [new(ClaimsIdentity.DefaultNameClaimType, login)];
+            ClaimsIdentity identity = new(claims, "Cookies");
+            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new(identity)).Wait();
         }
     }
 }

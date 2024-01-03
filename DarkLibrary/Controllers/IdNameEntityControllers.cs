@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApiUtils;
 using WebApiUtils.ApiAddresses;
 using WebApiUtils.Entities;
@@ -72,7 +73,7 @@ namespace DarkLibrary.Controllers
         }
     }
 
-
+    [Authorize]
     [Route("/authors")]
     public class AuthorController : BaseIdNameEntityControllers
     {
@@ -82,7 +83,7 @@ namespace DarkLibrary.Controllers
         protected override NamedApiMethods ApiAddresses => ApiDictionary.AuthorApi;
     }
 
-
+    [Authorize]
     [Route("/series")]
     public class BookSeriesController : BaseIdNameEntityControllers
     {
@@ -92,7 +93,7 @@ namespace DarkLibrary.Controllers
         protected override NamedApiMethods ApiAddresses => ApiDictionary.BookSeriesApi;
     }
 
-
+    [Authorize]
     [Route("/branch")]
     public class BranchController : BaseIdNameEntityControllers
     {
@@ -102,7 +103,7 @@ namespace DarkLibrary.Controllers
         protected override NamedApiMethods ApiAddresses => ApiDictionary.BranchApi;
     }
 
-
+    [Authorize]
     [Route("/librarian")]
     public class LibrarianController : BaseIdNameEntityControllers
     {
@@ -112,7 +113,7 @@ namespace DarkLibrary.Controllers
         protected override NamedApiMethods ApiAddresses => ApiDictionary.LibratianApi;
     }
 
-
+    [Authorize]
     [Route("/client")]
     public class ClientController : BaseIdNameEntityControllers
     {

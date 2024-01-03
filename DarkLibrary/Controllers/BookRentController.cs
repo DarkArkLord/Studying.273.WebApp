@@ -1,4 +1,5 @@
 ﻿using DarkLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApiUtils;
 using WebApiUtils.ApiAddresses;
@@ -6,6 +7,7 @@ using WebApiUtils.Entities;
 
 namespace DarkLibrary.Controllers
 {
+    [Authorize]
     [Route("/rent")]
     public class BookRentController : Controller
     {
