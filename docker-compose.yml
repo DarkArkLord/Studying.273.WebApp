@@ -5,6 +5,8 @@ services:
   darklibrary:
     image: ${DOCKER_REGISTRY-}darklibrary
     container_name: DarkLibrary
+    environment:
+      - AuthConnectionString=Server=sqlserver;Database=user_db;User Id=sa;Password=123456789qQ;Encrypt=False;TrustServerCertificate=True;
     build:
       context: .
       dockerfile: DarkLibrary/Dockerfile
