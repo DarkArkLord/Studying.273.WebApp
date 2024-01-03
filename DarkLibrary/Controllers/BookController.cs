@@ -17,7 +17,7 @@ namespace DarkLibrary.Controllers
                 try
                 {
                     var books = client.GetAllFrom<DBook>(ApiDictionary.BookApi);
-                    var items = books.Data.Select(item => MapBookToLinks(item, client));
+                    var items = books.Data.Select(item => MapBookToLinks(item, client)).ToArray();
                     return View("Index", items);
                 }
                 catch (Exception ex)

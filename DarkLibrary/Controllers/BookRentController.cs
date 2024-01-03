@@ -16,7 +16,7 @@ namespace DarkLibrary.Controllers
                 try
                 {
                     var rents = client.GetAllFrom<DBookRent>(ApiDictionary.BookRentApi);
-                    var items = rents.Data.Select(item => MapRentToLinks(item, client));
+                    var items = rents.Data.Select(item => MapRentToLinks(item, client)).ToArray();
                     return View("Index", items);
                 }
                 catch (Exception ex)
@@ -189,6 +189,9 @@ namespace DarkLibrary.Controllers
                     else if (response.Data is null) throw new Exception($"Request error for rent (id: {id}) calculation");
 
                     model.Rent = MapRentToLinks(response.Data, client);
+                    model.EndDate = model.Rent.CloseDate;
+                    model.PenaltyByDay = penaltyByDay;
+                    model.TotalPenalty = model.Rent.Penalty;
 
                     return View("Close", model);
                 }
@@ -228,7 +231,7 @@ namespace DarkLibrary.Controllers
                 }
 
                 var response = client.CreateRequest()
-                    .SetMethodGet()
+                    .SetMethodPost()
                     .SetUri($"{ApiDictionary.BookRentApi.Close}?rentId={id}&closeDate={rentEndDate}&penalty={penalty}")
                     .SendAsync().Result.Content
                     .ReadFromJsonAsync(typeof(DResponse<DBookRent>)).Result as DResponse<DBookRent>;

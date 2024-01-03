@@ -49,7 +49,7 @@ namespace WebApiUtils.BaseApi
                 var itemId = dbItem.Id;
                 DarkConverter.CopyInto(item, dbItem);
                 dbItem.Id = itemId;
-                var updatedEntity = db.Items.Update(item);
+                var updatedEntity = db.Items.Update(dbItem);
                 db.SaveChanges();
                 return updatedEntity.Entity;
             }

@@ -12,6 +12,6 @@
         public static NamedApiMethods LibratianApi { get; private set; } = new NamedApiMethods(protocol, "librarian_api", port);
 
         public static NamedApiMethods BookApi { get; private set; } = new NamedApiMethods(protocol, "book_api", port);
-        public static RentApiMethods BookRentApi { get; private set; } = new RentApiMethods(protocol, "book_api", port);
+        public static RentApiMethods BookRentApi { get; private set; } = new RentApiMethods(protocol, "bookrent_api", port);
     }
 }
