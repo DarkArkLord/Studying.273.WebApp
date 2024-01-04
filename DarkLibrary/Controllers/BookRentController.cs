@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApiUtils;
 using WebApiUtils.ApiAddresses;
 using WebApiUtils.Entities;
+using WebApiUtils.Rabbit;
 
 namespace DarkLibrary.Controllers
 {
@@ -225,34 +226,45 @@ namespace DarkLibrary.Controllers
                     model.ErrorText = "Error: Incorrect rent end date";
                     return View("Close", model);
                 }
+                else
+                {
+                    model.Rent.CloseDate = rentEndDate;
+                }
 
                 if (!int.TryParse(penaltyInput, out int penalty))
                 {
                     model.ErrorText = "Error: Incorrect penalty";
                     return View("Close", model);
                 }
+                else
+                {
+                    model.Rent.Penalty = penalty;
+                }
 
-                var response = client.CreateRequest()
-                    .SetMethodPost()
-                    .SetUri($"{ApiDictionary.BookRentApi.Close}?rentId={id}&closeDate={rentEndDate}&penalty={penalty}")
-                    .SendAsync().Result.Content
-                    .ReadFromJsonAsync(typeof(DResponse<DBookRent>)).Result as DResponse<DBookRent>;
+                //var response = client.CreateRequest()
+                //    .SetMethodPost()
+                //    .SetUri($"{ApiDictionary.BookRentApi.Close}?rentId={id}&closeDate={rentEndDate}&penalty={penalty}")
+                //    .SendAsync().Result.Content
+                //    .ReadFromJsonAsync(typeof(DResponse<DBookRent>)).Result as DResponse<DBookRent>;
 
-                if (response is null)
-                {
-                    model.ErrorText = $"Request error for rent (id: {id}) calculation";
-                    return View("Close", model);
-                }
-                if (!response.IsSuccess)
-                {
-                    model.ErrorText = response.Message;
-                    return View("Close", model);
-                }
-                if (response.Data is null)
-                {
-                    model.ErrorText = $"Request error for rent (id: {id}) calculation";
-                    return View("Close", model);
-                }
+                //if (response is null)
+                //{
+                //    model.ErrorText = $"Request error for rent (id: {id}) calculation";
+                //    return View("Close", model);
+                //}
+                //if (!response.IsSuccess)
+                //{
+                //    model.ErrorText = response.Message;
+                //    return View("Close", model);
+                //}
+                //if (response.Data is null)
+                //{
+                //    model.ErrorText = $"Request error for rent (id: {id}) calculation";
+                //    return View("Close", model);
+                //}
+
+                var sender = new RabbitSender(RabbitConfig.CloseRentQueue);
+                sender.SendMessage(model.Rent);
 
                 return RedirectToAction("Index");
             }

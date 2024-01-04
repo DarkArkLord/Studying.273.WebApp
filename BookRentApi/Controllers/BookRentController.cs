@@ -105,7 +105,7 @@ namespace BookRentApi.Controllers
             }
             else
             {
-                item.Penalty = rentDays * penaltyByDay;
+                item.Penalty = (rentDays - item.RentDays) * penaltyByDay;
             }
 
             return DResponse<DBookRent>.Success(item);

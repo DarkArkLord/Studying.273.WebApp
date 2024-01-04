@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApiUtils;
+using WebApiUtils.Rabbit;
 
 namespace AuthorApi
 {
@@ -22,6 +23,7 @@ namespace AuthorApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpLogging(o => { });
+            builder.Services.AddHostedService<CloseRentRabbitListener>();
 
             var app = builder.Build();
 
