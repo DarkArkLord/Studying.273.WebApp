@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using WebApiUtils.ApiAddresses;
 using WebApiUtils.Entities;
@@ -11,15 +9,18 @@ namespace WebApiUtils
 {
     public class DarkHttpClient : IDisposable
     {
+        public static HttpClientHandler CreateHandler() => new HttpClientHandler()
+        {
+            ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+        };
+
         private HttpClient client;
 
         public DarkHttpClient()
         {
-            var httpClientHelper = new HttpClientHandler()
-            {
-                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
-            };
+            var httpClientHelper = CreateHandler();
             client = new HttpClient(httpClientHelper);
+            DarkAuth.SetHttpAuth(client);
         }
 
         public DarkHttpRequestMessage CreateRequest()
@@ -89,32 +90,35 @@ namespace WebApiUtils
     {
         public static DResponse<T[]>? GetAllFrom<T>(this DarkHttpClient client, BaseApiMethods api)
         {
-            return client.CreateRequest()
+            var result = client.CreateRequest()
                 .SetMethodGet()
                 .SetUri(api.GetAll)
-                .SendAsync().Result.Content
-                .ReadFromJsonAsync(typeof(DResponse<T[]>)).Result as DResponse<T[]>;
+                .SendAsync().Result;
+            var content = result.Content;
+            return content.ReadFromJsonAsync(typeof(DResponse<T[]>)).Result as DResponse<T[]>;
         }
 
         public static DResponse<T>? GetByIdFrom<T>(this DarkHttpClient client, BaseApiMethods api, int id)
             where T : class
         {
-            return client.CreateRequest()
+            var result = client.CreateRequest()
                 .SetMethodGet()
                 .SetUri($"{api.GetById}?id={id}")
-                .SendAsync().Result.Content
-                .ReadFromJsonAsync(typeof(DResponse<T>)).Result as DResponse<T>;
+                .SendAsync().Result;
+            var content = result.Content;
+            return content.ReadFromJsonAsync(typeof(DResponse<T>)).Result as DResponse<T>;
         }
 
         public static DResponse<T>? AddFrom<T>(this DarkHttpClient client, BaseApiMethods api, T item)
             where T : class
         {
-            return client.CreateRequest()
+            var result = client.CreateRequest()
                 .SetMethodPost()
                 .SetUri(api.Add)
                 .SetContent(item)
-                .SendAsync().Result.Content
-                .ReadFromJsonAsync(typeof(DResponse<T>)).Result as DResponse<T>;
+                .SendAsync().Result;
+            var content = result.Content;
+            return content.ReadFromJsonAsync(typeof(DResponse<T>)).Result as DResponse<T>;
         }
     }
 }

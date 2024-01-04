@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using WebApiUtils;
@@ -7,6 +8,7 @@ using WebApiUtils.Entities;
 
 namespace BookRentApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class BookRentController : BaseApiController<DBookRent, BaseRepository<DBookRent>>

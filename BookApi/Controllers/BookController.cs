@@ -1,6 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Net.Http.Json;
 using WebApiUtils;
 using WebApiUtils.ApiAddresses;
 using WebApiUtils.BaseApi;
@@ -8,6 +8,7 @@ using WebApiUtils.Entities;
 
 namespace BookApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class BookController : BaseApiWithNameController<DBook, BaseWithNameRepository<DBook>>

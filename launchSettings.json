@@ -11,7 +11,8 @@
         "librarianapi": "StartDebugging",
         "clientapi": "StartDebugging",
         "bookapi": "StartDebugging",
-        "bookrentapi": "StartDebugging"
+        "bookrentapi": "StartDebugging",
+        "identityserver": "StartDebugging"
       }
     }
   }
