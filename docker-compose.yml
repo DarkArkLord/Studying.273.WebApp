@@ -135,6 +135,20 @@ services:
     build:
       context: .
       dockerfile: IdentityServer/Dockerfile
+    ports:
+      - "6608:8081"
+ 
+  # rabbit
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - 6609:15672
+      - 6610:5672
 
   # db
   sqlserver:
