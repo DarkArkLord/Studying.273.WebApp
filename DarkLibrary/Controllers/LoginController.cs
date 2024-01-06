@@ -122,7 +122,9 @@ namespace DarkLibrary.Controllers
             int result = 0;
             foreach (var c in s)
             {
-                result ^= c;
+                var random = new Random(c);
+                var temp = random.Next();
+                result ^= temp;
             }
 
             return result;
